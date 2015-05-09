@@ -1,0 +1,46 @@
+#!/usr/bin/env ruby
+
+Version = File.read(File.expand_path('../../VERSION', __FILE__))
+
+require 'optparse'
+
+$: << File.dirname(__FILE__) + '/../lib'
+require 'crash_monkey'
+
+opts = {}
+ARGV.options do |o|
+  o.on('-a app_name', 'Target Application(Required)') {|b| opts[:app_path] = b}
+  o.on('-w device', 'Target Device(Required)') {|b| opts[:device] = b}
+  o.on('-n run_count', 'How many times monkeys run(default: 2)') {|b| opts[:run_count] = b.to_i}
+  o.on('-d result_dir', 'Where to output result(default: ./crash_monkey_result)') {|b| opts[:result_base_dir] = File.expand_path(b)}
+  o.on('-t time_limit_sec', 'Time limit of running(default: 100 sec)') {|b| opts[:time_limit_sec] = b.to_i}
+  o.on('-c config_path', 'Configuration JSON Path') {|b| opts[:config_path] = File.expand_path(b)}
+  o.on('-e extend_javascript_path', 'Extend Uiautomation Javascript for such Login scripts') {|b| opts[:extend_javascript_path] = File.expand_path(b)}
+  o.on('--show-config', 'Show Current Configuration JSON') {|_| opts[:show_config] = true}
+  o.on('--list-app', 'Show List of Installed Apps in iOS Simulator') {|_| opts[:list_app] = true}
+  o.on('--list-devices', 'Show List of Devices') {|_| opts[:list_devices] = true}
+  o.on('--reset-iPhone-Simulator', 'Reset iPhone Simulator'){|_| opts[:reset_iphone_simulator] = true}
+  o.on('--version', 'print crash monkey version'){|_| opts[:version] = true}
+  o.parse!
+end
+
+if opts[:version]
+  dirname = File.dirname(File.dirname(__FILE__))
+  filepath = File.join(dirname, "VERSION")
+  puts File.open(filepath, 'rb') { |file| file.read }
+  exit(1)
+end
+
+unless opts[:app_path] || opts[:show_config] || opts[:list_app] || opts[:reset_iphone_simulator] || opts[:list_devices]
+  puts ARGV.options.help
+  exit(1)
+end
+
+opts[:run_count] ||= 2
+opts[:time_limit_sec] ||= 100
+
+result_ok = UIAutoMonkey::MonkeyRunner.new.run(opts)
+
+puts result_ok ? 'EXIT 0' : 'EXIT 1' unless opts[:show_config] || opts[:list_app] || opts[:list_devices]
+
+exit(result_ok ? 0 : 1)

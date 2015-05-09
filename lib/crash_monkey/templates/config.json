@@ -1,0 +1,85 @@
+{
+    "numberOfEvents": 100000,
+    "delayBetweenEvents": 0.05,// In seconds
+
+    /**
+    * Sometimes the monkey can fall into UI Holes from which it it is hard to escape. The monkey may then spend an inordinate
+    * amount of time in such holes, neglecting other parts of the application.
+    *
+    * For example, if a parent Window P has a large image
+    * and clicking on the image opens a child window C from which one exits by tapping a small X on the top right, then until that small X is
+    * tapped we will reamin in C. conditionHandlers offer the developer the option to periodically recognize that we are in C and press the X.
+    *
+    * See buttonHandler.js for a specialized conditionHandler useful when a top level button can be used to escape from a UI hole.
+    *
+    * conditionHandlers are objects that respond to the following methods:
+    *  isTrue(target, eventNumber): returns True if the condition is true given target and event number eventNumber.
+    *  checkEvery(): How many events should pass before we check.
+    *  handle(target, mainWindow) handle the condition.
+    *  isExclusive() if true then if this condition's handler is invoked then processing subsequent conditions is skipped for this particular event. This
+    *    is usually set to true as it allows the condition to exit a UI hole and at that point there may be no point executing other conditions
+    *  logStats() log statics using UIALogger;
+    * condition handers must have the following property
+    *  statsHandleInvokedCount - the count of the number of times we were invoked
+    */
+    "conditionHandlers": [],
+
+    /**
+    * Unfortunately if the application is not responsive "ANR", the monkey may not notice and continue to fire events not realizing that
+    * the application is stuck. When run via continuous integration users may not notice that "successful" monkey runs in fact were in an 
+    * ANR state.
+    *
+    * To deal with this the monkey supports ANR detection. Using an anrFingerprint function it periodically takes a fingerprint and if these
+    * are identical for a specificed interval then an ANR exception is thrown. 
+    *
+    *
+    */
+    "anrSettings": {
+        //fingerprintFunction defaults to false which will disable ANR fingerprinting. Otherwise set to a function that will return
+        //a string. One useful idiom using tuneup.js is
+        //#import tuneup.js
+        //config.anrSettings.fingerprintFunction = function() {return logVisibleElementTreeJSON(false)};
+        "fingerprintFunction": false,
+        "eventsBeforeANRDeclared": 1500, //throw exception if the fingerprint hasn't changed within this number of events
+        "eventsBetweenSnapshots": 150, //how often (in events) to take a snapshot using the fingerprintFunction 
+        "debug": false //if true extra logging is made            
+    },
+
+    // If the following line is uncommented, then screenshots are taken
+    // every "n" seconds.
+    "screenshotInterval": 5,
+
+    // Events are triggered based on the relative weights here. The event
+    // with this highest number gets triggered the most.
+    //
+    // If you want to add your own "events", check out the event method
+    // definitions below.
+    "eventWeights": {
+        "tap": 500,
+        "drag": 10,
+        "flick": 1,
+        "orientation": 1,
+        "clickVolumeUp": 1,
+        "clickVolumeDown": 1,
+        "lock": 1,
+        "pinchClose": 10,
+        "pinchOpen": 10,
+        "shake": 1
+    },
+
+    // Probability that touch events will have these different properties
+    "touchProbability": {
+        "multipleTaps": 0.05,
+        "multipleTouches": 0.05,
+        "longPress": 0.05
+    }
+
+    // Uncomment the following to restrict events to a rectangluar area of
+    // the screen
+    /*
+    frame: {
+        origin: {x: 0, y: 0},
+        size: {width: 100, height: 50}
+    }
+    */
+}

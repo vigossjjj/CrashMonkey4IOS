@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en-US">
+<head>
+  <meta charset="UTF-8">
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+  <script src="result_view.js"></script>
+  <title>MonkeyTest Result</title>
+  <style type="text/css">
+      <!--
+      .warning {
+          color: red;
+          font-size: 20px;
+      }
+      .event_box {
+          position: relative;
+          display: inline;
+      }
+
+      .event_text {
+          font-size: 12px;
+          position: absolute;
+          display: none;
+          width: 300px;
+          height: 300px;
+          padding: 3px;
+          border: #000066 groove thick;
+          background-color: #ffdead;
+          border-radius: 10px;        /* CSS3草案 */
+          -webkit-border-radius: 10px;    /* Safari,Google Chrome用 */
+          -moz-border-radius: 10px;   /* Firefox用 */
+      }
+
+      .event_box:hover .event_text {
+          left: 0px;
+          display: inline;
+          z-index: 10000;
+      }
+      -->
+  </style>
+</head>
+<body>
+<% if crashed %>
+  <div class="warning"; style=" font-size:30px; font-weight:bold;">Application was Crashed!</div>
+<% end %>
+
+<p>
+  <a href="console.log"; style=" font-size:20px; font-weight:bold;">console log</a>
+  <% if crash_report %>
+    | <a href="<%= crash_report %>"; style=" font-size:20px; font-weight:bold;">crash report</a>
+  <% end %>
+</p>
+
+
+
+<% log_list.each_with_index do |_, i| %>
+<% if i > 0 %>
+<div class="event_box"><canvas id="log-<%= i %>"; style="border: 1px black solid"></canvas><div class="event_text" id="text-<%= i %>"></div></div>
+<% end %>
+<% end %>
+<script type="text/javascript">
+$(function() {
+    MonkeyResult().configure({
+        log_list: log_list_json(),
+        view_prefix: 'log',
+        text_prefix: 'text',
+        image_size_rate: 1
+    }).draw();
+})
+
+var log_list_json = function() {
+    return <%= log_list_json %>;
+}
+</script>
+</body>
+</html>
