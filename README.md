@@ -51,10 +51,10 @@ Usage: crash_monkey [options]
 1. -a 填写应用的BundleID
 2. -w 填写iPhone的UDID
 
+**Sample:** `crash_monkey -a com.my.bundleid -w g45fb64220ed34f6lo033cd222280efcaaXXXXXX -n 3 -t 500`
+
 ###后续计划:
 1. 适配iPhone Simulator
-
-**Sample:** `crash_monkey -a com.my.bundleid -w g45fb64220ed34f6lo033cd222280efcaaXXXXXX -n 3 -t 500`
 
 ###测试报告:
 ***Summary:***
