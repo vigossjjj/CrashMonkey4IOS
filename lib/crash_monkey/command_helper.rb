@@ -25,7 +25,8 @@ module UIAutoMonkey
       app = cmds[-7]
       Open3.popen3(*cmds) do |stdin, stdout, stderr, thread|
         @tmpline = ""
-        t = Thread.start{
+        stdin.close
+        app_hang_monitor_thread = Thread.start{
           sleep 30
           while true
             current_line = @tmpline
@@ -37,12 +38,17 @@ module UIAutoMonkey
             end
           end
         }
-        stdin.close
+        instruments_stderr_thread = Thread.start{
+          stderr.each do |line|
+            puts line
+          end
+        }
         stdout.each do |line|
           @tmpline = line
           puts line
         end
-        t.kill
+        app_hang_monitor_thread.kill
+        instruments_stderr_thread.kill
       end
     end
 
