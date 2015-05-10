@@ -30,6 +30,8 @@ https://github.com/jonathanpenn/ui-auto-monkey
 
 ###使用说明:
 
+执行前需要先配置[custom.js][custom]相关参数 
+
 修改后的CrashMonkey较之前并无太大差异
 ```
 Usage: crash_monkey [options]
