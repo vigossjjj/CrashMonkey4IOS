@@ -211,6 +211,7 @@ module UIAutoMonkey
 
     def kill_all_need
       kill_all('instruments', '9')
+      kill_all('Instruments', '9')
       kill_all('idevicedebug', '9')
     end
 

@@ -30,7 +30,7 @@ module UIAutoMonkey
           sleep 30
           while true
             current_line = @tmpline
-            sleep 20
+            sleep 30
             after_sleep_line = @tmpline
             if current_line == after_sleep_line
               puts "App has hanged! Re-Launch it!"
