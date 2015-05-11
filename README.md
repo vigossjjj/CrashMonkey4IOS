@@ -31,11 +31,11 @@ https://github.com/jonathanpenn/ui-auto-monkey
 3. 安装**Homebrew** `ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
 
 ###使用说明:
-1. 运行`sh reset.sh`安装响应依赖
+1. 运行`sh reset.sh`安装相关依赖
 2. 执行前需要先配置[custom.js][custom]相关参数
-3. 执行命令`/CrashMonkey4IOS/bin/crash_monkey -a com.my.bundleid -w g45fb64220ed34f6lo033cd222280efcaaXXXXXX -n 1`
+3. 执行命令`/CrashMonkey4IOS/bin/crash_monkey -a ${App_BunnelID} -w ${iPhone_UDID} -n 1`
 
-***参数变更:***
+###参数变更:
 1. -a 填写应用的BundleID
 2. -w 填写iPhone的UDID
 修改后的CrashMonkey较之前并无太大差异
@@ -58,6 +58,9 @@ Usage: crash_monkey [options]
 ###TODO List:
 1. 适配iPhone Simulator
 2. 添加symbolicatecrash解析crash为明文。
+
+###Troubleshooting:
+1.运行日志中包含: `warning: Insecure world writable dir /some/path in PATH, mode 040777`, 但不影响执行, **解决方案:**`chmod go-w /some/path`
 
 ###测试报告:
 ***Summary:***
