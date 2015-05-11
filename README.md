@@ -25,13 +25,19 @@ https://github.com/jonathanpenn/ui-auto-monkey
   [custom]:https://github.com/vigossjjj/CrashMonkey4IOS/blob/master/lib/ui-auto-monkey/custom.js
   [tp]:https://github.com/vigossjjj/CrashMonkey4IOS/tree/master/lib/ui-auto-monkey/tuneup
 
-###依赖安装:
-需要安装[libimobiledevice][lidvc]
+###依赖及安装:
+1. 安装Ruby运行环境，建议不要使用OS X自带版本，可自行使用RVM安装最新版的Ruby。建议使用淘宝镜像安装，速度比较快，`$ sed -i -e 's/ftp\.ruby-lang\.org\/pub\/ruby/ruby\.taobao\.org\/mirrors\/ruby/g' ~/.rvm/config/db`
+2. 确保gem可用，也建议使用淘宝镜像 `gem sources --remove https://rubygems.org/;gem sources -a http://ruby.taobao.org/;gem sources -l`
+3. 安装**Homebrew** `ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
 
 ###使用说明:
+1. 运行`sh reset.sh`安装响应依赖
+2. 执行前需要先配置[custom.js][custom]相关参数
+3. 执行命令`/CrashMonkey4IOS/bin/crash_monkey -a com.my.bundleid -w g45fb64220ed34f6lo033cd222280efcaaXXXXXX -n 1`
 
-执行前需要先配置[custom.js][custom]相关参数 
-
+***参数变更:***
+1. -a 填写应用的BundleID
+2. -w 填写iPhone的UDID
 修改后的CrashMonkey较之前并无太大差异
 ```
 Usage: crash_monkey [options]
@@ -48,15 +54,10 @@ Usage: crash_monkey [options]
         --reset-iPhone-Simulator     Reset iPhone Simulator
         --version                    print crash monkey version
 ```
-***变更:***
 
-1. -a 填写应用的BundleID
-2. -w 填写iPhone的UDID
-
-**Sample:** `crash_monkey -a com.my.bundleid -w g45fb64220ed34f6lo033cd222280efcaaXXXXXX -n 3 -t 500`
-
-###后续计划:
+###TODO List:
 1. 适配iPhone Simulator
+2. 添加symbolicatecrash解析crash为明文。
 
 ###测试报告:
 ***Summary:***
