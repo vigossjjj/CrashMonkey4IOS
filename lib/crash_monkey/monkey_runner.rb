@@ -96,8 +96,11 @@ module UIAutoMonkey
       
       if diff_cr_list.size > 0
         @crashed = true
-        log "Find new crash report: #{diff_cr_list[0]}"
-        FileUtils.copy(diff_cr_list[0], result_dir)
+        new_cr_name = File.basename(diff_cr_list[0]).gsub(/\.ips$/, '.crash')
+        new_cr_path = File.join(result_dir, new_cr_name)
+        log "Find new crash report: #{new_cr_path}"
+        # FileUtils.copy(diff_cr_list[0], result_dir)
+        FileUtils.cp diff_cr_list[0], new_cr_path
       end
       # output result
       create_result_html(parse_results)
@@ -295,8 +298,8 @@ module UIAutoMonkey
     end
 
     def crash_report_list(times)
-      # pull_crash_from_iphone
-      `ls -t #{crash_save_dir(times)}/*.crash`.strip.split(/\n/)
+      # ios version >7.0  => *.ips
+      `ls -t #{crash_save_dir(times)}/*.crash 2>&1;ls -t #{crash_save_dir(times)}/*.ips 2>&1;`.strip.split(/\n/)
       # `ls -t #{crash_save_dir}/#{app_name}_*.crash`.strip.split(/\n/)
     end
 
