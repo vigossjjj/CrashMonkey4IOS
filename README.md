@@ -26,7 +26,7 @@ https://github.com/jonathanpenn/ui-auto-monkey
   [tp]:https://github.com/vigossjjj/CrashMonkey4IOS/tree/master/lib/ui-auto-monkey/tuneup
 
 ###依赖安装:
-需要安装[deviceconsole][dc], [libimobiledevice][lidvc]
+需要安装[libimobiledevice][lidvc]
 
 ###使用说明:
 

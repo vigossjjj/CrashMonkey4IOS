@@ -242,6 +242,10 @@ module UIAutoMonkey
       (@options[:time_limit_sec] || TIME_LIMIT_SEC).to_i
     end
 
+    def deviceconsole_original_path
+      File.expand_path('../../ios_device_log/deviceconsole', __FILE__)
+    end
+
     def ui_auto_monkey_original_path
       File.expand_path('../../ui-auto-monkey/UIAutoMonkey.js', __FILE__)
     end
@@ -306,7 +310,7 @@ module UIAutoMonkey
 
     def grep_ios_syslog
       # 'deviceconsole -u 2f2fb64220ed34f645d33cd222280efcaa37dadf'
-      "deviceconsole -u #{device}"
+      "#{deviceconsole_original_path} -u #{device}"
     end
 
     def console_log_path
