@@ -98,8 +98,11 @@ module UIAutoMonkey
         @crashed = true
         new_cr_name = File.basename(diff_cr_list[0]).gsub(/\.ips$/, '.crash')
         new_cr_path = File.join(result_dir, new_cr_name)
-        log "Find new crash report: #{new_cr_path}"
-        # FileUtils.copy(diff_cr_list[0], result_dir)
+        log "Find new crash report: #{new_cr_path}"        
+        if dsym_base_path != ''
+          puts "Symbolicating crash report..."
+          symbolicating_crash_report(diff_cr_list[0])
+        end
         FileUtils.cp diff_cr_list[0], new_cr_path
       end
       # output result
@@ -273,6 +276,26 @@ module UIAutoMonkey
       "#{result_base_dir}/custom.js"
     end
 
+    def dsym_base_path
+      @options[:dsym_file_path] || ""
+    end
+
+    def xcode_developer_path
+      `xcode-select --print-path`.strip
+    end
+
+    def xcode_path
+      `dirname #{xcode_developer_path}`.strip
+    end
+    
+    def symbolicatecrash_base_path()
+      `find #{xcode_path} -name symbolicatecrash`.strip
+    end
+
+    def symbolicating_crash_report(crash_base_path)
+      `DEVELOPER_DIR=#{xcode_developer_path} #{symbolicatecrash_base_path} -o #{crash_base_path} #{crash_base_path} #{dsym_base_path};wait;`
+    end
+
     def result_base_dir
       @options[:result_base_dir] || RESULT_BASE_PATH
     end
@@ -407,7 +430,7 @@ module UIAutoMonkey
               # output.write(line) if line.include?(app_name)
             end
           rescue IOError
-            log 'tail finished: system.log'
+            log 'tail finished: iOS system log'
           end
         end
       end
