@@ -41,18 +41,19 @@ https://github.com/jonathanpenn/ui-auto-monkey
 修改后的CrashMonkey较之前并无太大差异
 ```
 Usage: crash_monkey [options]
-    -a app_name                      Target Application(Required)
-    -w device                        Target Device(Required)
+    -a app_name                      Target Application, abs path to simulator-compiled .app file or the bundle_id of the desired target on device(Required)
+    -w device                        Target Device UDID(Required)
     -n run_count                     How many times monkeys run(default: 2)
     -d result_dir                    Where to output result(default: ./crash_monkey_result)
     -t time_limit_sec                Time limit of running(default: 100 sec)
+    -s dsym_file                     Use .dSYM file to symbolicating crash logs
     -c config_path                   Configuration JSON Path
     -e extend_javascript_path        Extend Uiautomation Javascript for such Login scripts
         --show-config                Show Current Configuration JSON
         --list-app                   Show List of Installed Apps in iOS Simulator
         --list-devices               Show List of Devices
         --reset-iPhone-Simulator     Reset iPhone Simulator
-        --version                    print crash monkey version
+        --version                    print crash monkey version                  print crash monkey version
 ```
 
 ###TODO List:
