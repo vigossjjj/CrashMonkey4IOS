@@ -1,12 +1,6 @@
 # CrashMonkey4IOS
 iOS Monkey Test Tool.
 
-本项目主要是基于以下项目修改：
-
-https://github.com/mokemokechicken/CrashMonkey
-
-https://github.com/jonathanpenn/ui-auto-monkey
-
 ###改进点:
 1. 原先的CrashMonkey只支持iPhone Simulator测试，修改后**支持真机测试**(目前模拟器的兼容没有做)
 2. 支持真机收集**系统日志(Systemlog)**，利用[deviceconsole][dc]实现
@@ -61,7 +55,7 @@ Usage: crash_monkey [options]
 2. 添加symbolicatecrash解析crash为明文。
 
 ###Troubleshooting:
-1.运行日志中包含: `warning: Insecure world writable dir /some/path in PATH, mode 040777`, 但不影响执行, **解决方案:**`chmod go-w /some/path`
+安装和执行测试遇到的问题解决方案请参看:[Troubleshooting][troubleshooting]
 
 ###测试报告:
 ***Summary:***
@@ -72,3 +66,7 @@ Usage: crash_monkey [options]
 <img alt="detail" src="https://github.com/vigossjjj/CrashMonkey4IOS/blob/master/pic/systemlog.jpg">
 ***CrashLog:***
 <img alt="detail" src="https://github.com/vigossjjj/CrashMonkey4IOS/blob/master/pic/crashlog.jpg">
+
+###参考文献：
+1. https://github.com/mokemokechicken/CrashMonkey
+2. https://github.com/jonathanpenn/ui-auto-monkey
