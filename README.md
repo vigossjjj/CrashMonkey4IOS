@@ -18,6 +18,7 @@ iOS Monkey Test Tool.
   [uiatmonkey]: https://github.com/jonathanpenn/ui-auto-monkey/blob/master/UIAutoMonkey.js
   [custom]:https://github.com/vigossjjj/CrashMonkey4IOS/blob/master/lib/ui-auto-monkey/custom.js
   [tp]:https://github.com/vigossjjj/CrashMonkey4IOS/tree/master/lib/ui-auto-monkey/tuneup
+  [troubleshooting]:https://github.com/vigossjjj/CrashMonkey4IOS/tree/master/Troubleshooting.md
 
 ###依赖及安装:
 1. 安装Ruby运行环境，建议不要使用OS X自带版本，可自行使用RVM安装最新版的Ruby。建议使用淘宝镜像安装，速度比较快，`$ sed -i -e 's/ftp\.ruby-lang\.org\/pub\/ruby/ruby\.taobao\.org\/mirrors\/ruby/g' ~/.rvm/config/db`
@@ -55,7 +56,7 @@ Usage: crash_monkey [options]
 2. 添加symbolicatecrash解析crash为明文。
 
 ###Troubleshooting:
-安装和执行测试遇到的问题解决方案请参看:[Troubleshooting][troubleshooting]
+安装和执行测试遇到的问题解决方案请参看:[Troubleshooting.md][troubleshooting]
 
 ###测试报告:
 ***Summary:***
