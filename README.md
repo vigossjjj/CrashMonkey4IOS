@@ -72,5 +72,3 @@ Usage: crash_monkey [options]
 <img alt="detail" src="https://github.com/vigossjjj/CrashMonkey4IOS/blob/master/pic/systemlog.jpg">
 ***CrashLog:***
 <img alt="detail" src="https://github.com/vigossjjj/CrashMonkey4IOS/blob/master/pic/crashlog.jpg">
-
-
