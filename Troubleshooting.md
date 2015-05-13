@@ -4,9 +4,11 @@ CrashMonkey4IOS 开发环境：OS X Yosemtie 10.10.x
 
 注意:
 
-1.不要使用sudo执行执行 sh reset.sh(具体原因参看下文)
+1.运行日志中包含: `warning: Insecure world writable dir /some/path in PATH, mode 040777`, 但不影响执行, **解决方案:**`chmod go-w /some/path`
 
-2.确保被测app被移至后台后进程不会被强制杀死。
+2.不要使用sudo执行执行 sh reset.sh(具体原因参看下文)
+
+3.确保被测app被移至后台后进程不会被强制杀死。
 
 ####安装过程使用reset.sh时(推荐执行前手动更新本地的ruby和homebrew版本)
 ***问题1: gem install erubis 需要用户本地的管理员权限***
