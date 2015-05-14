@@ -52,7 +52,7 @@ CrashMonkey4IOS 开发环境：OS X Yosemtie 10.10.x
 
 ***问题2: 有时会出现点击的坐标区域超出范围***
 
-问题原因: 通过下图日志中的信息__target.setDeviceOrientation("4")__
+问题原因: 通过下图日志中的信息__target.setDeviceOrientation("4")__ 设备屏幕进行了旋转，横纵坐标变化，而点击的坐标域没有随之更新。
 
 日志截图:
 
