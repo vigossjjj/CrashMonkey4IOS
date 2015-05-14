@@ -52,6 +52,8 @@ CrashMonkey4IOS 开发环境：OS X Yosemtie 10.10.x
 
 ***问题2: 有时会出现点击的坐标区域超出范围***
 
+问题原因: 通过下图日志中的信息__target.setDeviceOrientation("4")__
+
 日志截图:
 
 <img alt="summary" src="https://github.com/vigossjjj/CrashMonkey4IOS/blob/master/pic/runsetorientation.png">
