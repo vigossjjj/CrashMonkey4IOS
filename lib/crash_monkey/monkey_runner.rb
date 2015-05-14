@@ -417,9 +417,8 @@ module UIAutoMonkey
 
     def watch_syslog
       STDOUT.sync = true
+      puts "Attempting iOS device system log capture via deviceconsole."
       stdin, stdout, stderr = Open3.popen3(grep_ios_syslog)
-      # puts "device:#{device}"
-      # puts "device:"+device
       log_filename = "#{result_base_dir}/console.log"
       thread = Thread.new do
         File.open(log_filename, 'a') do |output|
@@ -430,7 +429,7 @@ module UIAutoMonkey
               # output.write(line) if line.include?(app_name)
             end
           rescue IOError
-            log 'tail finished: iOS system log'
+            log 'Stop iOS system log capture.'
           end
         end
       end
