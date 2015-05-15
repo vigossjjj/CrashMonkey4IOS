@@ -18,8 +18,8 @@ module UIAutoMonkey
 
     def run(opts)
 
-      puts "INSTRUMENTS_TRACE_PATH:#{INSTRUMENTS_TRACE_PATH}"
-      puts "RESULT_BASE_PATH:#{RESULT_BASE_PATH}"
+      puts "INSTRUMENTS_TRACE_PATH : #{INSTRUMENTS_TRACE_PATH}"
+      puts "RESULT_BASE_PATH : #{RESULT_BASE_PATH}"
 
       @options = opts
       if @options[:show_config]
@@ -139,6 +139,7 @@ module UIAutoMonkey
       result_hash[:ng_count] = result_hash[:test_count] - result_hash[:ok_count]
       open("#{result_base_dir}/index.html", 'w') {|f| f.write er.result(result_hash)}
       copy_html_resources
+      puts "Monkey Test Report : #{result_base_dir}/index.html"
     end
     
     def copy_html_resources
