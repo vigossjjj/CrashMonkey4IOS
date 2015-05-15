@@ -340,7 +340,7 @@ module UIAutoMonkey
     end
 
     def console_log_path
-      "#{result_dir}/console.log"
+      "#{result_dir}/console.txt"
     end
 
     def template_path(name)
@@ -419,7 +419,7 @@ module UIAutoMonkey
       STDOUT.sync = true
       puts "Attempting iOS device system log capture via deviceconsole."
       stdin, stdout, stderr = Open3.popen3(grep_ios_syslog)
-      log_filename = "#{result_base_dir}/console.log"
+      log_filename = "#{result_base_dir}/console.txt"
       thread = Thread.new do
         File.open(log_filename, 'a') do |output|
           begin
@@ -430,6 +430,7 @@ module UIAutoMonkey
             end
           rescue IOError
             log 'Stop iOS system log capture.'
+            kill_all_need
           end
         end
       end

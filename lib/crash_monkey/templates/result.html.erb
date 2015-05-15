@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
   <script src="result_view.js"></script>
+  <link rel="stylesheet" type="text/css" href="../bootstrap.css"/>
   <title>MonkeyTest Result</title>
   <style type="text/css">
       <!--
@@ -39,17 +40,40 @@
   </style>
 </head>
 <body>
+  <br>
+  <div class="container theme-showcase" role="main">
+  <div class="jumbotron">
 <% if crashed %>
-  <div class="warning"; style=" font-size:30px; font-weight:bold;">Application was Crashed!</div>
+  <center>
+    <div class="alert alert-danger" role="alert">
+      <h1>
+        <strong>Crash!</strong>
+          Application crashed during the monkey testing.
+      </h1>
+    </div>
+  </center>
+<% else %>
+  <center>
+    <div class="alert alert-success" role="alert">
+      <h1>
+        <strong>Well done!</strong>
+          None crash happend.
+      </h1>
+    </div>
+  </center>
 <% end %>
 
 <p>
-  <a href="console.log"; style=" font-size:20px; font-weight:bold;">console log</a>
+  <center>
+  <a class="btn btn-lg btn-info" role="button"  href="console.txt" style="font-size: 20px">system log</a>
   <% if crash_report %>
-    | <a href="<%= crash_report %>"; style=" font-size:20px; font-weight:bold;">crash report</a>
+    <a class="btn btn-lg btn-danger" role="button" href="<%= crash_report %>" style="font-size: 20px">crash report</a>
   <% end %>
+  <center>
 </p>
-
+</div>
+</div>
+<hr>
 
 
 <% log_list.each_with_index do |_, i| %>
