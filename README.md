@@ -53,7 +53,7 @@ Usage: crash_monkey [options]
 
 ###TODO List:
 1. 适配iPhone Simulator
-2. 添加symbolicatecrash解析crash为明文。
+2. 修改配置脚本及文档。
 
 ###Troubleshooting:
 安装和执行测试遇到的问题解决方案请参看:[Troubleshooting.md][troubleshooting]
