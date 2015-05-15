@@ -17,7 +17,7 @@ CrashMonkey4IOS 开发环境：OS X Yosemtie 10.10.x
 
 日志截图:
 
-<img alt="summary" src="https://github.com/vigossjjj/CrashMonkey4IOS/blob/master/pic/geminstallerror.png">
+<img alt="summary" src="https://github.com/vigossjjj/CrashMonkey4IOS/blob/master/img/geminstallerror.png">
 
 解决方案: sudo gem install erubis
 
@@ -30,13 +30,13 @@ CrashMonkey4IOS 开发环境：OS X Yosemtie 10.10.x
 
 日志截图:
 
-<img alt="summary" src="https://github.com/vigossjjj/CrashMonkey4IOS/blob/master/pic/brewupdatesuccess.png">
+<img alt="summary" src="https://github.com/vigossjjj/CrashMonkey4IOS/blob/master/img/brewupdatesuccess.png">
 
 ***问题3: brew install libimobiledevice 需要用户本地的管理员权限***
 
 日志截图:
 
-<img alt="summary" src="https://github.com/vigossjjj/CrashMonkey4IOS/blob/master/pic/sudobrewinstallerror.png">
+<img alt="summary" src="https://github.com/vigossjjj/CrashMonkey4IOS/blob/master/img/sudobrewinstallerror.png">
 
 解决方案:sudo chown -R $USER /usr/local 提取用户权限，而不要直接 sudo brew install libimobiledevice 这样会出现以上错误
 
@@ -46,7 +46,7 @@ CrashMonkey4IOS 开发环境：OS X Yosemtie 10.10.x
 
 日志截图:
 
-<img alt="summary" src="https://github.com/vigossjjj/CrashMonkey4IOS/blob/master/pic/enableUIAutomation.png">
+<img alt="summary" src="https://github.com/vigossjjj/CrashMonkey4IOS/blob/master/img/enableUIAutomation.png">
 
 解决方案:	该问题属于iphone设置问题，首先查看设置中“开发者”中启用“EnableUIAutomation”选项，如果没有“开发者”需要连接iphone和OS X 使用xcode进行设备识别。
 
@@ -56,6 +56,6 @@ CrashMonkey4IOS 开发环境：OS X Yosemtie 10.10.x
 
 日志截图:
 
-<img alt="summary" src="https://github.com/vigossjjj/CrashMonkey4IOS/blob/master/pic/runsetorientation.png">
+<img alt="summary" src="https://github.com/vigossjjj/CrashMonkey4IOS/blob/master/img/runsetorientation.png">
 
 解决方案: 该问题属于monkey执行中对于特殊事件流（旋屏）引发的场景变化处理，下一版本中处理
