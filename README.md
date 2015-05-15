@@ -60,13 +60,13 @@ Usage: crash_monkey [options]
 
 ###测试报告:
 ***Summary:***
-<img alt="summary" src="https://github.com/vigossjjj/CrashMonkey4IOS/blob/master/pic/summary.jpg">
+<img alt="summary" src="https://github.com/vigossjjj/CrashMonkey4IOS/blob/master/img/summary.jpg">
 ***Detail:***
-<img alt="detail" src="https://github.com/vigossjjj/CrashMonkey4IOS/blob/master/pic/detail.jpg">
+<img alt="detail" src="https://github.com/vigossjjj/CrashMonkey4IOS/blob/master/img/detail.jpg">
 ***SystemLog:***
-<img alt="detail" src="https://github.com/vigossjjj/CrashMonkey4IOS/blob/master/pic/systemlog.jpg">
+<img alt="detail" src="https://github.com/vigossjjj/CrashMonkey4IOS/blob/master/img/systemlog.jpg">
 ***CrashLog:***
-<img alt="detail" src="https://github.com/vigossjjj/CrashMonkey4IOS/blob/master/pic/crashlog.jpg">
+<img alt="detail" src="https://github.com/vigossjjj/CrashMonkey4IOS/blob/master/img/crashlog.jpg">
 
 ###参考文献：
 1. https://github.com/mokemokechicken/CrashMonkey
