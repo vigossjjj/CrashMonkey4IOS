@@ -12,7 +12,7 @@ module UIAutoMonkey
     RESULT_BASE_PATH = File.expand_path('crash_monkey_result')
     INSTRUMENTS_TRACE_PATH = File.expand_path('*.trace')
     RESULT_DETAIL_EVENT_NUM = 50
-    TIME_LIMIT_SEC = 100
+    # TIME_LIMIT_SEC = 100
 
     include UIAutoMonkey::CommandHelper
 
@@ -80,8 +80,14 @@ module UIAutoMonkey
       start_time = Time.now
       watch_syslog do
         begin
-          Timeout.timeout(time_limit_sec + 5) do
+          # Timeout.timeout(time_limit_sec + 5) do
+          #   run_process(%W(instruments -w #{device} -l #{time_limit} -t #{TRACE_TEMPLATE} #{app_path} -e UIASCRIPT #{ui_custom_path} -e UIARESULTSPATH #{result_base_dir}))
+          # end
+          # puts time_limit_sec
+          unless time_limit_sec.nil?
             run_process(%W(instruments -w #{device} -l #{time_limit} -t #{TRACE_TEMPLATE} #{app_path} -e UIASCRIPT #{ui_custom_path} -e UIARESULTSPATH #{result_base_dir}))
+          else
+            run_process(%W(instruments -w #{device} -t #{TRACE_TEMPLATE} #{app_path} -e UIASCRIPT #{ui_custom_path} -e UIARESULTSPATH #{result_base_dir}))
           end
         rescue Timeout::Error
           # log 'killall -9 instruments'
@@ -164,7 +170,12 @@ module UIAutoMonkey
     end
 
     def list_app
+      puts "============For iPhone Simulator:"
       puts find_apps('*.app').map{|n| File.basename n}.uniq.sort.join("\n")
+      puts "============For iPhone Device:"
+      if device
+        puts `ideviceinstaller -u #{device} -l`
+      end
     end
 
     def list_devices
@@ -185,7 +196,7 @@ module UIAutoMonkey
     end
 
     def device
-      @options[:device] || devices[0]
+      @options[:device] || (devices[0].strip.split("[")[1].delete "]")
     end
 
     def app_path
@@ -245,8 +256,12 @@ module UIAutoMonkey
       time_limit_sec * 1000
     end
 
+    # def time_limit_sec
+    #   (@options[:time_limit_sec] || TIME_LIMIT_SEC).to_i
+    # end
+
     def time_limit_sec
-      (@options[:time_limit_sec] || TIME_LIMIT_SEC).to_i
+      @options[:time_limit_sec]
     end
 
     def deviceconsole_original_path
@@ -261,8 +276,8 @@ module UIAutoMonkey
       File.expand_path('../../ui-auto-monkey/custom.js', __FILE__)
     end
 
-    def ui_button_handler_original_path
-      File.expand_path('../../ui-auto-monkey/buttonHandler.js', __FILE__)
+    def ui_hole_handler_original_path
+      File.expand_path('../../ui-auto-monkey/handler', __FILE__)
     end
 
     def ui_tuneup_original_path
@@ -360,7 +375,7 @@ module UIAutoMonkey
       # File.open(ui_custom_path, 'w') {|f| f.write(js)}
       FileUtils.copy(ui_custom_original_path, RESULT_BASE_PATH)
       FileUtils.copy(ui_auto_monkey_original_path, RESULT_BASE_PATH)
-      FileUtils.copy(ui_button_handler_original_path, RESULT_BASE_PATH)
+      FileUtils.cp_r(ui_hole_handler_original_path, RESULT_BASE_PATH)
       FileUtils.cp_r(ui_tuneup_original_path, RESULT_BASE_PATH)
       # FileUtils.copy("#{bootstrap_dir}/js/bootstrap.js", result_base_dir)
     end
@@ -484,6 +499,7 @@ module UIAutoMonkey
         #   hash[:screen_size] = log[MESSAGE]
         end
       end
+      #add screen_size
       hash = {}
       hash[:screen_size] = @log_list[0][MESSAGE]
       ret << hash

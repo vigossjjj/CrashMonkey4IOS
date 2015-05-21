@@ -38,7 +38,7 @@ unless opts[:app_path] || opts[:show_config] || opts[:list_app] || opts[:reset_i
 end
 
 opts[:run_count] ||= 2
-opts[:time_limit_sec] ||= 100
+opts[:time_limit_sec] ||= nil
 
 result_ok = UIAutoMonkey::MonkeyRunner.new.run(opts)
 
