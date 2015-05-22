@@ -17,6 +17,7 @@ ARGV.options do |o|
   o.on('-s dsym_file', 'Use .dSYM file to symbolicating crash logs') {|b| opts[:dsym_file_path] = File.expand_path(b)}
   o.on('-c config_path', 'Configuration JSON Path') {|b| opts[:config_path] = File.expand_path(b)}
   o.on('-e extend_javascript_path', 'Extend Uiautomation Javascript for such Login scripts') {|b| opts[:extend_javascript_path] = File.expand_path(b)}
+  o.on('--compress-result', 'compress the screenshot image of result folder, to save disk space!(50% compress)'){|_| opts[:compress_result] = true}
   o.on('--show-config', 'Show Current Configuration JSON') {|_| opts[:show_config] = true}
   o.on('--list-app', 'Show List of Installed Apps in iOS Simulator') {|_| opts[:list_app] = true}
   o.on('--list-devices', 'Show List of Devices') {|_| opts[:list_devices] = true}

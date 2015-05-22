@@ -129,6 +129,9 @@ module UIAutoMonkey
       FileUtils.remove_dir(result_history_dir(@times), true)
       FileUtils.remove_dir(crash_save_dir(@times+1), true)
       FileUtils.move(result_dir, result_history_dir(@times))
+      if @options[:compress_result]
+        compress_image(result_history_dir(@times))
+      end
       rm_instruments_trace(INSTRUMENTS_TRACE_PATH)
       kill_all('iPhone Simulator')
       sleep 3
@@ -225,6 +228,11 @@ module UIAutoMonkey
 
     def device_name(device)
       `ideviceinfo -u #{device} -k DeviceName`
+    end
+
+    def compress_image(path)
+      puts 'Compress screenshot images...'
+      `find #{path} -name "*.png" -exec convert {} -resize 50% -sample 50% {} \\\;`
     end
 
     def kill_all_need
