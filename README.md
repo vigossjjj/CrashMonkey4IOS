@@ -30,10 +30,7 @@ iOS Monkey Test Tool.
 2. 执行前需要先配置[custom.js][custom]相关参数
 3. 执行命令`/CrashMonkey4IOS/bin/crash_monkey -a ${App_BunnelID} -w ${iPhone_UDID} -n 1`
 
-###参数变更:
-1. -a 填写应用的BundleID
-2. -w 填写iPhone的UDID
-修改后的CrashMonkey较之前并无太大差异
+###参数说明:
 ```
 Usage: crash_monkey [options]
     -a app_name                      Target Application, abs path to simulator-compiled .app file or the bundle_id of the desired target on device(Required)
@@ -44,17 +41,17 @@ Usage: crash_monkey [options]
     -s dsym_file                     Use .dSYM file to symbolicating crash logs
     -c config_path                   Configuration JSON Path
     -e extend_javascript_path        Extend Uiautomation Javascript for such Login scripts
-        --show-config                Show Current Configuration JSON
-        --list-app                   Show List of Installed Apps in iOS Simulator
+        --compress-result            compress the screenshot image of result folder, to save disk space!(50% compress)
+        --show-config                Show Current Configuration custom.js
+        --list-app                   Show List of Installed Apps in iPhone/iPhone Simulator
         --list-devices               Show List of Devices
         --reset-iPhone-Simulator     Reset iPhone Simulator
-        --version                    print crash monkey version                  print crash monkey version
+        --version                    print crash monkey version
 ```
 
 ###TODO List:
 1. 适配iPhone Simulator
 2. 修改配置脚本及文档。
-3. 压缩截图
 
 ###Troubleshooting:
 安装和执行测试遇到的问题解决方案请参看:[Troubleshooting.md][troubleshooting]
