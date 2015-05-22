@@ -52,25 +52,10 @@ b.如果没有安装成功这个erubis模块的话会在/CrashMonkey4IOS/bin下�
 解决方案:sudo chown -R $USER /usr/local 提取用户权限，而不要直接 sudo brew install libimobiledevice 这样会出现以上错误
 
 
-####CrashMonkey4IOS运行时(后续待优化)
-
-正确的运行：进入/CrashMonkey4IOS/bin下 运行 ./crash_monkey
-
-
-***问题1: 出现脚本无法运行在iphone设备上运行***
+***问题4: 出现脚本无法运行在iphone设备上运行***
 
 日志截图:
 
 <img alt="summary" src="https://github.com/vigossjjj/CrashMonkey4IOS/blob/master/img/enableUIAutomation.png">
 
 解决方案:	该问题属于iphone设置问题，首先查看设置中“开发者”中启用“EnableUIAutomation”选项，如果没有“开发者”需要连接iphone和OS X 使用xcode进行设备识别。
-
-***问题2: 有时会出现点击的坐标区域超出范围***
-
-问题原因: 通过下图日志中的信息__target.setDeviceOrientation("4")__ 设备屏幕进行了旋转，横纵坐标变化，而点击的坐标域没有随之更新。
-
-日志截图:
-
-<img alt="summary" src="https://github.com/vigossjjj/CrashMonkey4IOS/blob/master/img/runsetorientation.png">
-
-解决方案: 该问题属于monkey执行中对于特殊事件流（旋屏）引发的场景变化处理，下一版本中处理
