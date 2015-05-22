@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
-
+# coding: utf-8
+Encoding.default_external = Encoding::UTF_8
+Encoding.default_internal = Encoding::UTF_8
 Version = File.read(File.expand_path('../../VERSION', __FILE__))
 
 require 'optparse'
