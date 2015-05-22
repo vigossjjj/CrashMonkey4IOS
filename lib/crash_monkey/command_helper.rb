@@ -1,3 +1,5 @@
+# coding: utf-8
+
 module UIAutoMonkey
   module CommandHelper
     require 'open3'
