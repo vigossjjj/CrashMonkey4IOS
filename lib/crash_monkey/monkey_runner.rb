@@ -12,12 +12,11 @@ module UIAutoMonkey
     RESULT_BASE_PATH = File.expand_path('crash_monkey_result')
     INSTRUMENTS_TRACE_PATH = File.expand_path('*.trace')
     RESULT_DETAIL_EVENT_NUM = 50
-    # TIME_LIMIT_SEC = 100
+    TIME_STAP = Time.new.strftime("%Y%m%d%H%M%S")
 
     include UIAutoMonkey::CommandHelper
 
     def run(opts)
-
       puts "INSTRUMENTS_TRACE_PATH : #{INSTRUMENTS_TRACE_PATH}"
       puts "RESULT_BASE_PATH : #{RESULT_BASE_PATH}"
 
@@ -321,7 +320,7 @@ module UIAutoMonkey
     end
 
     def result_base_dir
-      @options[:result_base_dir] || RESULT_BASE_PATH
+      File.join(@options[:result_base_dir] || RESULT_BASE_PATH, "report_#{TIME_STAP}")
     end
 
     def crash_save_dir(times)
@@ -381,10 +380,10 @@ module UIAutoMonkey
       #   js = File.read(extend_javascript_path) + "\n" + js
       # end
       # File.open(ui_custom_path, 'w') {|f| f.write(js)}
-      FileUtils.copy(ui_custom_original_path, RESULT_BASE_PATH)
-      FileUtils.copy(ui_auto_monkey_original_path, RESULT_BASE_PATH)
-      FileUtils.cp_r(ui_hole_handler_original_path, RESULT_BASE_PATH)
-      FileUtils.cp_r(ui_tuneup_original_path, RESULT_BASE_PATH)
+      FileUtils.copy(ui_custom_original_path, result_base_dir)
+      FileUtils.copy(ui_auto_monkey_original_path, result_base_dir)
+      FileUtils.cp_r(ui_hole_handler_original_path, result_base_dir)
+      FileUtils.cp_r(ui_tuneup_original_path, result_base_dir)
       # FileUtils.copy("#{bootstrap_dir}/js/bootstrap.js", result_base_dir)
     end
 
