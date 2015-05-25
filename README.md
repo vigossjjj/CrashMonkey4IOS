@@ -35,13 +35,16 @@ iOS Monkey Test Tool.
 Usage: crash_monkey [options]
     -a app_name                      Target Application, abs path to simulator-compiled .app file or the bundle_id of the desired target on device(Required)
     -w device                        Target Device UDID(Required)
-    -n run_count                     How many times monkeys run(default: 2)
+    -n run_count                     How many times monkeys run(default: 1)
     -d result_dir                    Where to output result(default: ./crash_monkey_result)
     -t time_limit_sec                Time limit of running(default: 100 sec)
     -s dsym_file                     Use .dSYM file to symbolicating crash logs
     -c config_path                   Configuration JSON Path
     -e extend_javascript_path        Extend Uiautomation Javascript for such Login scripts
-        --compress-result            compress the screenshot image of result folder, to save disk space!(50% compress)
+        --compress-result compress_rate
+                                     compress the screenshot images to save disk space!(example: 50%)
+        --detail-count detail_event_count
+                                     How many events to show in detail result page(default 50)
         --show-config                Show Current Configuration custom.js
         --list-app                   Show List of Installed Apps in iPhone/iPhone Simulator
         --list-devices               Show List of Devices
