@@ -192,7 +192,7 @@ module UIAutoMonkey
       FileUtils.rm_rf("#{Dir.home}/Library/Application\ Support/iPhone\ Simulator/")
       puts 'reset iPhone Simulator successful'
     end
-:
+
     def total_test_count
       (@options[:run_count] || 2)
     end
