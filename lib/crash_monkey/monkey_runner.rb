@@ -147,7 +147,7 @@ module UIAutoMonkey
       result_hash[:ng_count] = result_hash[:test_count] - result_hash[:ok_count]
       open("#{result_base_dir}/index.html", 'w') {|f| f.write er.result(result_hash)}
       copy_html_resources
-      puts "Monkey Test Report : #{result_base_dir}/index.html"
+      puts "Monkey Test Report:#{result_base_dir}/index.html"
     end
     
     def copy_html_resources
@@ -192,7 +192,7 @@ module UIAutoMonkey
       FileUtils.rm_rf("#{Dir.home}/Library/Application\ Support/iPhone\ Simulator/")
       puts 'reset iPhone Simulator successful'
     end
-
+:
     def total_test_count
       (@options[:run_count] || 2)
     end
