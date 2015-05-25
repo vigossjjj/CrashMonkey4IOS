@@ -13,13 +13,14 @@ opts = {}
 ARGV.options do |o|
   o.on('-a app_name', 'Target Application, abs path to simulator-compiled .app file or the bundle_id of the desired target on device(Required)') {|b| opts[:app_path] = b}
   o.on('-w device', 'Target Device UDID(Required)') {|b| opts[:device] = b}
-  o.on('-n run_count', 'How many times monkeys run(default: 2)') {|b| opts[:run_count] = b.to_i}
+  o.on('-n run_count', 'How many times monkeys run(default: 1)') {|b| opts[:run_count] = b.to_i}
   o.on('-d result_dir', 'Where to output result(default: ./crash_monkey_result)') {|b| opts[:result_base_dir] = File.expand_path(b)}
   o.on('-t time_limit_sec', 'Time limit of running(default: 100 sec)') {|b| opts[:time_limit_sec] = b.to_i}
   o.on('-s dsym_file', 'Use .dSYM file to symbolicating crash logs') {|b| opts[:dsym_file_path] = File.expand_path(b)}
   o.on('-c config_path', 'Configuration JSON Path') {|b| opts[:config_path] = File.expand_path(b)}
   o.on('-e extend_javascript_path', 'Extend Uiautomation Javascript for such Login scripts') {|b| opts[:extend_javascript_path] = File.expand_path(b)}
-  o.on('--compress-result', 'compress the screenshot image of result folder, to save disk space!(50% compress)'){|_| opts[:compress_result] = true}
+  o.on('--compress-result compress_rate', 'compress the screenshot images to save disk space!(example: 50%)'){|b| opts[:compress_rate] = b}
+  o.on('--detail-count detail_event_count', 'How many events to show in detail result page(default 50)'){|b| opts[:detail_event_count] = b.to_i}
   o.on('--show-config', 'Show Current Configuration custom.js') {|_| opts[:show_config] = true}
   o.on('--list-app', 'Show List of Installed Apps in iPhone/iPhone Simulator') {|_| opts[:list_app] = true}
   o.on('--list-devices', 'Show List of Devices') {|_| opts[:list_devices] = true}
@@ -40,8 +41,9 @@ unless opts[:app_path] || opts[:show_config] || opts[:list_app] || opts[:reset_i
   exit(1)
 end
 
-opts[:run_count] ||= 2
+opts[:run_count] ||= 1
 opts[:time_limit_sec] ||= nil
+opts[:detail_event_count] ||= 50
 
 result_ok = UIAutoMonkey::MonkeyRunner.new.run(opts)
 

@@ -11,7 +11,6 @@ module UIAutoMonkey
     TRACE_TEMPLATE='/Applications/Xcode.app/Contents/Applications/Instruments.app/Contents/PlugIns/AutomationInstrument.xrplugin/Contents/Resources/Automation.tracetemplate'
     RESULT_BASE_PATH = File.expand_path('crash_monkey_result')
     INSTRUMENTS_TRACE_PATH = File.expand_path('*.trace')
-    RESULT_DETAIL_EVENT_NUM = 50
     TIME_STAP = Time.new.strftime("%Y%m%d%H%M%S")
 
     include UIAutoMonkey::CommandHelper
@@ -128,7 +127,7 @@ module UIAutoMonkey
       FileUtils.remove_dir(result_history_dir(@times), true)
       FileUtils.remove_dir(crash_save_dir(@times+1), true)
       FileUtils.move(result_dir, result_history_dir(@times))
-      if @options[:compress_result]
+      if @options[:compress_rate]
         compress_image(result_history_dir(@times))
       end
       rm_instruments_trace(INSTRUMENTS_TRACE_PATH)
@@ -231,7 +230,9 @@ module UIAutoMonkey
 
     def compress_image(path)
       puts 'Compress screenshot images...'
-      `find #{path} -name "*.png" -exec convert {} -resize 50% -sample 50% {} \\\;`
+      compress_rate = @options[:compress_rate]
+      # `find #{path} -name "*.png" -exec convert {} -resize 50% -sample 50% {} \\\;`
+      `mogrify -resize #{compress_rate} #{path}/*.png`
     end
 
     def kill_all_need
@@ -423,7 +424,7 @@ module UIAutoMonkey
     end
 
     def create_result_html(log_list)
-      latest_list = LogDecoder.new(log_list).decode_latest(RESULT_DETAIL_EVENT_NUM)
+      latest_list = LogDecoder.new(log_list).decode_latest(@options[:detail_event_count])
       hash = {}
       hash[:log_list] = latest_list.reverse
       hash[:log_list_json] = JSON.dump(hash[:log_list])
