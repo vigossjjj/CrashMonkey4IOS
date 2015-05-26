@@ -35,7 +35,7 @@ module UIAutoMonkey
             sleep 30
             after_sleep_line = @tmpline
             if current_line == after_sleep_line
-              puts "App has hanged! Re-Launch it!"
+              puts "WARN: Application go to background! Auto-Re-Launch app!"
               relaunch_app(device, app)
             end
           end
