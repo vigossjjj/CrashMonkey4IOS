@@ -232,7 +232,7 @@ module UIAutoMonkey
       puts 'Compress screenshot images...'
       compress_rate = @options[:compress_rate]
       # `find #{path} -name "*.png" -exec convert {} -resize 50% -sample 50% {} \\\;`
-      `mogrify -resize #{compress_rate} #{path}/*.png`
+      `mogrify -resize #{compress_rate} "#{path}/*.png"`
     end
 
     def kill_all_need
