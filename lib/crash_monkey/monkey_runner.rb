@@ -151,7 +151,7 @@ module UIAutoMonkey
     end
 
     def show_config
-      puts File.read(config_json_path)
+      puts File.read(config_custom_path)
     end
 
     def show_extend_javascript
@@ -384,15 +384,15 @@ module UIAutoMonkey
       #   js = File.read(extend_javascript_path) + "\n" + js
       # end
       # File.open(ui_custom_path, 'w') {|f| f.write(js)}
-      FileUtils.copy(ui_custom_original_path, result_base_dir)
+      FileUtils.copy(config_custom_path, result_base_dir)
       FileUtils.copy(ui_auto_monkey_original_path, result_base_dir)
       FileUtils.cp_r(ui_hole_handler_original_path, result_base_dir)
       FileUtils.cp_r(ui_tuneup_original_path, result_base_dir)
       # FileUtils.copy("#{bootstrap_dir}/js/bootstrap.js", result_base_dir)
     end
 
-    def config_json_path
-      @options[:config_path] || ui_custom_original_path
+    def config_custom_path
+      @options[:custom_path] || ui_custom_original_path
     end
 
     def replace_text(orig, replace_str, marker_begin_line, marker_end_line)

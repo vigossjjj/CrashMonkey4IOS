@@ -39,7 +39,7 @@ Usage: crash_monkey [options]
     -d result_dir                    Where to output result(default: ./crash_monkey_result)
     -t time_limit_sec                Time limit of running(default: 100 sec)
     -s dsym_file                     Use .dSYM file to symbolicating crash logs
-    -c config_path                   Configuration JSON Path
+    -c custom_path                   Configuration custom.js Path
     -e extend_javascript_path        Extend Uiautomation Javascript for such Login scripts
         --compress-result compress_rate
                                      compress the screenshot images to save disk space!(example: 50%)
