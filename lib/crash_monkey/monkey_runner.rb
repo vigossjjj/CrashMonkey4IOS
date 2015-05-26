@@ -16,10 +16,12 @@ module UIAutoMonkey
     include UIAutoMonkey::CommandHelper
 
     def run(opts)
-      puts "INSTRUMENTS_TRACE_PATH : #{INSTRUMENTS_TRACE_PATH}"
-      puts "RESULT_BASE_PATH : #{RESULT_BASE_PATH}"
-
       @options = opts
+      res_dir = @options[:result_base_dir] || RESULT_BASE_PATH
+
+      puts "INSTRUMENTS_TRACE_PATH : #{INSTRUMENTS_TRACE_PATH}"
+      puts "RESULT_BASE_PATH : #{res_dir}"
+
       if @options[:show_config]
         show_config
         return true
