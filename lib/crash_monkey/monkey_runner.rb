@@ -39,7 +39,7 @@ module UIAutoMonkey
       FileUtils.makedirs(result_base_dir)
       generate_ui_auto_monkey
       ###########
-      start_time = Time.now
+      start_time = Time.new.strftime("%Y-%m-%d %H:%M:%S")
       result_list = []
       total_test_count.times do |times|
         @times = times
@@ -51,7 +51,7 @@ module UIAutoMonkey
       #
       create_index_html({
           :start_time => start_time,
-          :end_time => Time.now,
+          :end_time => Time.new.strftime("%Y-%m-%d %H:%M:%S"),
           :result_list => result_list,
           :ProductType => product_type(device),
           :ProductVersion => product_version(device),
@@ -78,17 +78,12 @@ module UIAutoMonkey
       start_time = Time.now
       watch_syslog do
         begin
-          # Timeout.timeout(time_limit_sec + 5) do
-          #   run_process(%W(instruments -w #{device} -l #{time_limit} -t #{TRACE_TEMPLATE} #{app_path} -e UIASCRIPT #{ui_custom_path} -e UIARESULTSPATH #{result_base_dir}))
-          # end
-          # puts time_limit_sec
           unless time_limit_sec.nil?
             run_process(%W(instruments -w #{device} -l #{time_limit} -t #{TRACE_TEMPLATE} #{app_path} -e UIASCRIPT #{ui_custom_path} -e UIARESULTSPATH #{result_base_dir}))
           else
             run_process(%W(instruments -w #{device} -t #{TRACE_TEMPLATE} #{app_path} -e UIASCRIPT #{ui_custom_path} -e UIARESULTSPATH #{result_base_dir}))
           end
         rescue Timeout::Error
-          # log 'killall -9 instruments'
           kill_all('instruments', '9')
         end
       end
@@ -137,10 +132,6 @@ module UIAutoMonkey
 
     def create_index_html(result_hash)
       er = Erubis::Eruby.new(File.read(template_path('index.html.erb')))
-      # result_hash[:ProductType] = product_type(device)
-      # result_hash[:ProductVersion] = product_version(device)
-      # result_hash[:UniqueDeviceID] = device
-      # result_hash[:DeviceName] = device_name(device)
       result_hash[:test_count] = result_hash[:result_list].size
       result_hash[:ok_count] = result_hash[:result_list].select {|r| r[:ok]}.size
       result_hash[:ng_count] = result_hash[:test_count] - result_hash[:ok_count]
@@ -217,15 +208,32 @@ module UIAutoMonkey
     end
 
     def product_type(device)
-      `ideviceinfo -u #{device} -k ProductType`
+      product_hash={
+          "iPhone7,2"=>"iPhone 6",
+          "iPhone7,1"=>"iPhone 6 Plus",
+          "iPhone6,2"=>"iPhone 5S (CDMA)",
+          "iPhone6,1"=>"iPhone 5S (GSM)",
+          "iPhone5,4"=>"iPhone 5C (CDMA)",
+          "iPhone5,3"=>"iPhone 5C (GSM)",
+          "iPhone5,2"=>"iPhone 5",
+          "iPhone5,1"=>"iPhone 5",
+          "iPhone4,1"=>"iPhone 4S",
+          "iPhone3,2"=>"iPhone 4 - CDMA",
+          "iPhone3,1"=>"iPhone 4 - GSM",
+          "iPhone2,1"=>"iPhone 3GS",
+          "iPhone1,2"=>"iPhone 3G",
+          "iPhone1,1"=>"iPhone",
+        }
+      type=`ideviceinfo -u #{device} -k ProductType`.strip
+      product_hash[type]
     end
 
     def product_version(device)
-      `ideviceinfo -u #{device} -k ProductVersion`
+      `ideviceinfo -u #{device} -k ProductVersion`.strip
     end
 
     def device_name(device)
-      `ideviceinfo -u #{device} -k DeviceName`
+      `ideviceinfo -u #{device} -k DeviceName`.strip
     end
 
     def compress_image(path)
@@ -263,10 +271,6 @@ module UIAutoMonkey
     def time_limit
       time_limit_sec * 1000
     end
-
-    # def time_limit_sec
-    #   (@options[:time_limit_sec] || TIME_LIMIT_SEC).to_i
-    # end
 
     def time_limit_sec
       @options[:time_limit_sec]
@@ -359,7 +363,6 @@ module UIAutoMonkey
     end
 
     def grep_ios_syslog
-      # 'deviceconsole -u 2f2fb64220ed34f645d33cd222280efcaa37dadf'
       "#{deviceconsole_original_path} -u #{device}"
     end
 
@@ -390,7 +393,6 @@ module UIAutoMonkey
 
     def config_json_path
       @options[:config_path] || ui_custom_original_path
-      # @options[:config_path] || template_path('config.json')
     end
 
     def replace_text(orig, replace_str, marker_begin_line, marker_end_line)
