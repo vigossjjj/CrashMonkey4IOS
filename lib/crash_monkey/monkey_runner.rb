@@ -428,7 +428,7 @@ module UIAutoMonkey
     end
 
     def create_result_html(log_list)
-      latest_list = LogDecoder.new(log_list).decode_latest(@options[:detail_event_count])
+      latest_list = LogDecoder.new(log_list).decode_latest(@options[:detail_event_count], @options[:drop_useless_img], result_dir)
       hash = {}
       hash[:log_list] = latest_list.reverse
       hash[:log_list_json] = JSON.dump(hash[:log_list])
@@ -483,9 +483,15 @@ module UIAutoMonkey
       @log_list = log_list
     end
 
-    def decode_latest(num=10)
+    def rm_unused_imgs(used_imgs, dir)
+      used_strs = used_imgs.join("\\|")
+      `cd "#{dir}";find . -type 'f' -name '*.png' | grep -v "#{used_strs}" | xargs rm`
+    end
+
+    def decode_latest(num=10, drop_useless_img, drop_dir)
       hash = {}
       ret = []
+      used_imgs = []
       # puts @log_list
       @log_list.reverse.each do |log|
         break if num == 0
@@ -494,6 +500,7 @@ module UIAutoMonkey
             hash[:action_image] = log[MESSAGE]
           elsif log[MESSAGE] =~ /^monkey/
             hash[:screen_image] = log[MESSAGE]
+            used_imgs << log[MESSAGE]
             hash[:timestamp] = log[TIMESTAMP]
             
             # emit and init
@@ -510,6 +517,11 @@ module UIAutoMonkey
         # elsif log[LOG_TYPE] == 'Default' && log[MESSAGE] =~ /^DeviceInfo/
         #   hash[:screen_size] = log[MESSAGE]
         end
+      end
+      #drop unused imgs
+      if drop_useless_img
+        puts "Drop useless images..."
+        rm_unused_imgs(used_imgs, drop_dir)
       end
       #add screen_size
       hash = {}

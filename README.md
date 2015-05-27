@@ -46,6 +46,7 @@ Usage: crash_monkey [options]
         --detail-count detail_event_count
                                      How many events to show in detail result page(default 50)
         --show-config                Show Current Configuration custom.js
+        --drop-useless-img           Delete the un-displayed images of detial page.
         --list-app                   Show List of Installed Apps in iPhone/iPhone Simulator
         --list-devices               Show List of Devices
         --reset-iPhone-Simulator     Reset iPhone Simulator

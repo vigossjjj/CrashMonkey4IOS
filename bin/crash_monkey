@@ -22,6 +22,7 @@ ARGV.options do |o|
   o.on('--compress-result compress_rate', 'compress the screenshot images to save disk space!(example: 50%)'){|b| opts[:compress_rate] = b}
   o.on('--detail-count detail_event_count', 'How many events to show in detail result page(default 50)'){|b| opts[:detail_event_count] = b.to_i}
   o.on('--show-config', 'Show Current Configuration custom.js') {|_| opts[:show_config] = true}
+  o.on('--drop-useless-img', 'Delete the un-displayed images of detial page.') {|_| opts[:drop_useless_img] = true}
   o.on('--list-app', 'Show List of Installed Apps in iPhone/iPhone Simulator') {|_| opts[:list_app] = true}
   o.on('--list-devices', 'Show List of Devices') {|_| opts[:list_devices] = true}
   o.on('--reset-iPhone-Simulator', 'Reset iPhone Simulator'){|_| opts[:reset_iphone_simulator] = true}
