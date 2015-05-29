@@ -47,10 +47,9 @@ module UIAutoMonkey
         @times = times
         setup_running
         result = run_a_case
-        finish_running(result)
+        finish_running
         result_list << result
       end
-      #
       create_index_html({
           :start_time => start_time,
           :end_time => Time.new.strftime("%Y-%m-%d %H:%M:%S"),
@@ -70,6 +69,8 @@ module UIAutoMonkey
       FileUtils.remove_dir(result_dir, true)
       ENV['UIARESULTSPATH'] = result_dir
       @crashed = false
+      @no_run = false
+      @uia_trace = false
     end
 
     def run_a_case
@@ -113,13 +114,14 @@ module UIAutoMonkey
         :start_time => start_time,
         :end_time => Time.now,
         :times => @times,
-        :ok => !@crashed,
+        :ok => !@crashed && !@no_run,
+        :crash => @crashed,
         :result_dir => File.basename(result_history_dir(@times)),
         :message => nil
       }
     end
 
-    def finish_running(result)
+    def finish_running
       kill_all_need
       FileUtils.remove_dir(result_history_dir(@times), true)
       FileUtils.remove_dir(crash_save_dir(@times+1), true)
@@ -136,7 +138,8 @@ module UIAutoMonkey
       er = Erubis::Eruby.new(File.read(template_path('index.html.erb')))
       result_hash[:test_count] = result_hash[:result_list].size
       result_hash[:ok_count] = result_hash[:result_list].select {|r| r[:ok]}.size
-      result_hash[:ng_count] = result_hash[:test_count] - result_hash[:ok_count]
+      result_hash[:cr_count] = result_hash[:result_list].select {|r| r[:crash]}.size
+      result_hash[:nr_count] = result_hash[:test_count] - result_hash[:ok_count] - result_hash[:cr_count]
       open("#{result_base_dir}/index.html", 'w') {|f| f.write er.result(result_hash)}
       copy_html_resources
       puts "Monkey Test Report:#{result_base_dir}/index.html"
@@ -372,8 +375,16 @@ module UIAutoMonkey
       "#{result_dir}/console.txt"
     end
 
+    def uiautomation_xsl_path
+      File.expand_path("../templates/automation_result.xsl", __FILE__)
+    end
+
     def template_path(name)
       File.expand_path("../templates/#{name}", __FILE__)
+    end
+
+    def parse_uiautomation_plist
+      `xsltproc --output "#{result_dir}/uiautomation.html" #{uiautomation_xsl_path} "#{result_dir}/Automation Results.plist"`
     end
 
     def generate_ui_auto_monkey
@@ -422,8 +433,10 @@ module UIAutoMonkey
           ary = record.elements.to_a.map{|a| a.text}
           log_list << Hash[*ary]
         end
-        @crashed = true if log_list[-1][LOG_TYPE] == 'Fail'
+        parse_uiautomation_plist
+        @uia_trace = true
       end
+      @no_run = true if log_list.empty? || log_list[-1][MESSAGE] =~ /target application is not frontmost/
       log_list
     end
 
@@ -434,7 +447,9 @@ module UIAutoMonkey
       hash[:log_list_json] = JSON.dump(hash[:log_list])
       crash_report = Dir.glob("#{result_dir}/*.crash")[0]
       hash[:crash_report] = crash_report ? File.basename(crash_report) : nil
+      hash[:uia_trace] = @uia_trace
       hash[:crashed] = @crashed
+      hash[:no_run] = @no_run
 
       er = Erubis::Eruby.new(File.read(template_path('result.html.erb')))
       open("#{result_dir}/result.html", 'w') do |f|
@@ -492,7 +507,6 @@ module UIAutoMonkey
       hash = {}
       ret = []
       used_imgs = []
-      # puts @log_list
       @log_list.reverse.each do |log|
         break if num == 0
         if log[LOG_TYPE] == 'Screenshot'
@@ -523,10 +537,12 @@ module UIAutoMonkey
         puts "Drop useless images..."
         rm_unused_imgs(used_imgs, drop_dir)
       end
-      #add screen_size
-      hash = {}
-      hash[:screen_size] = @log_list[0][MESSAGE]
-      ret << hash
+      if !@log_list.empty?
+        #add screen_size
+        hash = {}
+        hash[:screen_size] = @log_list[0][MESSAGE]
+        ret << hash
+      end
       ret
     end
   end

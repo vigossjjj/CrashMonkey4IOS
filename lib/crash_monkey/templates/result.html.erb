@@ -52,6 +52,15 @@
       </h1>
     </div>
   </center>
+<% elsif no_run %>
+  <center>
+    <div class="alert alert-warning" role="alert">
+      <h1>
+        <strong>No run!</strong>
+          Application not start monkey testing.
+      </h1>
+    </div>
+  </center>
 <% else %>
   <center>
     <div class="alert alert-success" role="alert">
@@ -66,15 +75,17 @@
 <p>
   <center>
   <a class="btn btn-lg btn-info" role="button"  href="console.txt" style="font-size: 20px">system log</a>
-  <% if crash_report %>
-    <a class="btn btn-lg btn-danger" role="button" href="<%= crash_report %>" style="font-size: 20px">crash report</a>
+  <% if uia_trace %>
+    <a class="btn btn-lg btn-primary" role="button" href="./uiautomation.html" style="font-size: 20px">uiauto trace</a>
   <% end %>
-  <center>
+  <% if crash_report %>
+    <a class="btn btn-lg btn-danger" role="button" href="<%= crash_report %>" style="font-size: 20px">crash log</a>
+  <% end %>
+  </center>
 </p>
 </div>
 </div>
 <hr>
-
 
 <% log_list.each_with_index do |_, i| %>
 <% if i > 0 %>

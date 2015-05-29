@@ -15,10 +15,9 @@
           <li>Hardware: <%= ProductType %>, <%= ProductVersion %>, <%= UniqueDeviceID %></li>
           <li>Application: <%= Application %> </li>
           <li>Span: <%= start_time %> ~ <%= end_time %></li>
-          <li>Results: <%= test_count %> Test, <%= ok_count %> Ok, <%= ng_count %> Crash</li>
+          <li>Results: <%= test_count %> Test, <%= ok_count %> Ok, <%= cr_count %> Crash, <%= nr_count %> No Run</li>
         </ul>
       </div>
-
         <h1>Details</h1>
         <table class="table table-bordered">
           <thead>
@@ -31,16 +30,41 @@
           </thead>
           <tbody>
           <% for result in result_list %>
-          <tr class="<%= result[:ok] ? 'success' : 'error' %>">
-            <td><%= result[:times]+1 %></td>
-            <td>
-              <a href="<%= result[:result_dir] %>/result.html">
-                <span><%= result[:ok] ? 'OK' : 'Crash' %></span>
-              </a>
-            </td>
-            <td><%= result[:end_time].to_i - result[:start_time].to_i%> Sec</td>
-            <td><%= result[:message] %></td>
-          </tr>
+            <% if result[:ok] %>
+              <tr class="success">
+                <td><%= result[:times]+1 %></td>
+                <td>
+                  <a href="<%= result[:result_dir] %>/result.html">
+                    <span>OK</span>
+                  </a>
+                </td>
+                <td><%= result[:end_time].to_i - result[:start_time].to_i%> Sec</td>
+                <td><%= result[:message] %></td>
+              </tr>
+              
+            <% elsif result[:crash] %>
+              <tr class="error">
+                <td><%= result[:times]+1 %></td>
+                <td>
+                  <a href="<%= result[:result_dir] %>/result.html">
+                    <span>Crash</span>
+                  </a>
+                </td>
+                <td><%= result[:end_time].to_i - result[:start_time].to_i%> Sec</td>
+                <td><%= result[:message] %></td>
+              </tr>  
+            <% else %>
+              <tr class="warning">
+                <td><%= result[:times]+1 %></td>
+                <td>
+                  <a href="<%= result[:result_dir] %>/result.html">
+                    <span>No Run</span>
+                  </a>
+                </td>
+                <td><%= result[:end_time].to_i - result[:start_time].to_i%> Sec</td>
+                <td><%= result[:message] %></td>
+              </tr>
+            <% end %>
           <% end %>
           </tbody>
         </table>
