@@ -7,14 +7,14 @@ Version = File.read(File.expand_path('../../VERSION', __FILE__))
 require 'optparse'
 
 $: << File.dirname(__FILE__) + '/../lib'
-require 'crash_monkey'
+require 'smart_monkey'
 
 opts = {}
 ARGV.options do |o|
   o.on('-a app_name', 'Target Application, abs path to simulator-compiled .app file or the bundle_id of the desired target on device(Required)') {|b| opts[:app_path] = b}
   o.on('-w device', 'Target Device UDID(Required)') {|b| opts[:device] = b}
   o.on('-n run_count', 'How many times monkeys run(default: 1)') {|b| opts[:run_count] = b.to_i}
-  o.on('-d result_dir', 'Where to output result(default: ./crash_monkey_result)') {|b| opts[:result_base_dir] = File.expand_path(b)}
+  o.on('-d result_dir', 'Where to output result(default: ./smart_monkey_result)') {|b| opts[:result_base_dir] = File.expand_path(b)}
   o.on('-t time_limit_sec', 'Time limit of running(default: 100 sec)') {|b| opts[:time_limit_sec] = b.to_i}
   o.on('-s dsym_file', 'Use .dSYM file to symbolicating crash logs') {|b| opts[:dsym_file_path] = File.expand_path(b)}
   o.on('-c custom_path', 'Configuration custom.js Path') {|b| opts[:custom_path] = File.expand_path(b)}

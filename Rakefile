@@ -14,13 +14,13 @@ require 'rake'
 require 'jeweler'
 Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
-  gem.name = 'crash_monkey'
-  gem.homepage = 'https://github.com/mokemokechicken/CrashMonkey'
+  gem.name = 'smart_monkey'
+  gem.homepage = 'https://github.com/vigossjjj/CrashMonkey4IOS'
   gem.license = 'MIT'
   gem.summary = 'Monkey Test For iOS Application'
   gem.description = 'This is a Monkey Test Tool using UIAutomation.'
-  gem.email = 'mokemokechicken@gmail.com'
-  gem.authors = ['Ken Morishita']
+  gem.email = 'jiangyunpeng@58.com'
+  gem.authors = ['vigossjjj']
   # dependencies defined in Gemfile
 end
 Jeweler::RubygemsDotOrgTasks.new

@@ -4,34 +4,31 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = %q{crash_monkey}
+  s.name = %q{smart_monkey}
   version_path = File.join(File.dirname(__FILE__), "VERSION")
   s.version = File.read(version_path)
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["Ken Morishita"]
-  s.date = %q{2014-03-28}
-  s.default_executable = %q{crash_monkey}
-  s.description = %q{This is a Monkey Test Tool using UIAutomation.}
-  s.email = %q{mokemokechicken@gmail.com}
-  s.executables = ["crash_monkey"]
+  s.authors = ["vigossjjj"]
+  s.date = %q{2015-06-01}
+  s.default_executable = %q{smart_monkey}
+  s.description = %q{iOS Monkey test tool base on UIAutomation.}
+  s.email = %q{jiangyunpeng@58.com}
+  s.executables = ["smart_monkey"]
   s.extra_rdoc_files = [
     "LICENSE.txt",
     "README.md",
-    "README.rdoc"
   ]
   s.files = [
-    ".document",
     ".rspec",
     "Gemfile",
-    "Gemfile.lock",
     "LICENSE.txt",
     "README.md",
-    "README.rdoc",
     "Rakefile",
+    "Troubleshooting.md",
     "VERSION",
-    "bin/crash_monkey",
-    "crash_monkey.gemspec",
+    "bin/smart_monkey",
+    "smart_monkey.gemspec",
     "lib/bootstrap/css/bootstrap-responsive.css",
     "lib/bootstrap/css/bootstrap-responsive.min.css",
     "lib/bootstrap/css/bootstrap.css",
@@ -40,20 +37,39 @@ Gem::Specification.new do |s|
     "lib/bootstrap/img/glyphicons-halflings.png",
     "lib/bootstrap/js/bootstrap.js",
     "lib/bootstrap/js/bootstrap.min.js",
-    "lib/crash_monkey.rb",
-    "lib/crash_monkey/command_helper.rb",
-    "lib/crash_monkey/monkey_runner.rb",
-    "lib/crash_monkey/templates/config.json",
-    "lib/crash_monkey/templates/index.html.erb",
-    "lib/crash_monkey/templates/result.html.erb",
-    "lib/crash_monkey/templates/result_view.coffee",
-    "lib/crash_monkey/templates/result_view.js",
-    "lib/ui-auto-monkey/LICENSE",
-    "lib/ui-auto-monkey/README.md",
+    "lib/ios_device_log/deviceconsole",
+    "lib/smart_monkey.rb",
+    "lib/smart_monkey/command_helper.rb",
+    "lib/smart_monkey/monkey_runner.rb",
+    "lib/smart_monkey/templates/automation_result.xsl",
+    "lib/smart_monkey/templates/index.html.erb",
+    "lib/smart_monkey/templates/result.html.erb",
+    "lib/smart_monkey/templates/result_view.coffee",
+    "lib/smart_monkey/templates/result_view.js",
+    "lib/ui-auto-monkey/custom.js",
     "lib/ui-auto-monkey/UIAutoMonkey.js",
+    "lib/ui-auto-monkey/handler/buttonHandler.js",
+    "lib/ui-auto-monkey/handler/wbScrollViewButtonHandler.js",
+    "lib/ui-auto-monkey/tuneup/assertions.js",
+    "lib/ui-auto-monkey/tuneup/image_asserter",
+    "lib/ui-auto-monkey/tuneup/image_assertion.js",
+    "lib/ui-auto-monkey/tuneup/image_assertion.rb",
+    "lib/ui-auto-monkey/tuneup/lang-ext.js",
+    "lib/ui-auto-monkey/tuneup/LICENSE",
+    "lib/ui-auto-monkey/tuneup/screen.js",
+    "lib/ui-auto-monkey/tuneup/test.js",
+    "lib/ui-auto-monkey/tuneup/tuneup_js.podspec",
+    "lib/ui-auto-monkey/tuneup/tuneup.js",
+    "lib/ui-auto-monkey/tuneup/uiautomation-ext.js",
+    "lib/ui-auto-monkey/tuneup/test_runner/abbreviated_console_output.rb",
+    "lib/ui-auto-monkey/tuneup/test_runner/colored_console_output.rb",
+    "lib/ui-auto-monkey/tuneup/test_runner/console_output.rb",
+    "lib/ui-auto-monkey/tuneup/test_runner/preprocessor.rb",
+    "lib/ui-auto-monkey/tuneup/test_runner/run",
+    "lib/ui-auto-monkey/tuneup/test_runner/xunit_output.rb",
     "spec/spec_helper.rb"
   ]
-  s.homepage = %q{https://github.com/mokemokechicken/CrashMonkey}
+  s.homepage = %q{https://github.com/vigossjjj/CrashMonkey4IOS}
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.6.2}

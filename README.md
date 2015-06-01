@@ -28,15 +28,15 @@ iOS Monkey Test Tool.
 ###使用说明:
 1. 运行`sh reset.sh`安装相关依赖
 2. 执行前需要先配置[custom.js][custom]相关参数
-3. 执行命令`/CrashMonkey4IOS/bin/crash_monkey -a ${App_BunnelID} -w ${iPhone_UDID} -n 1`
+3. 执行命令`/CrashMonkey4IOS/bin/smart_monkey -a ${App_BunnelID} -w ${iPhone_UDID} -n 1`
 
 ###参数说明:
 ```
-Usage: crash_monkey [options]
+Usage: smart_monkey [options]
     -a app_name                      Target Application, abs path to simulator-compiled .app file or the bundle_id of the desired target on device(Required)
     -w device                        Target Device UDID(Required)
     -n run_count                     How many times monkeys run(default: 1)
-    -d result_dir                    Where to output result(default: ./crash_monkey_result)
+    -d result_dir                    Where to output result(default: ./smart_monkey_result)
     -t time_limit_sec                Time limit of running(default: 100 sec)
     -s dsym_file                     Use .dSYM file to symbolicating crash logs
     -c custom_path                   Configuration custom.js Path

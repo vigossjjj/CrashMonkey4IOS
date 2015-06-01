@@ -9,7 +9,7 @@ module UIAutoMonkey
 
   class MonkeyRunner
     TRACE_TEMPLATE='/Applications/Xcode.app/Contents/Applications/Instruments.app/Contents/PlugIns/AutomationInstrument.xrplugin/Contents/Resources/Automation.tracetemplate'
-    RESULT_BASE_PATH = File.expand_path('crash_monkey_result')
+    RESULT_BASE_PATH = File.expand_path('smart_monkey_result')
     INSTRUMENTS_TRACE_PATH = File.expand_path('*.trace')
     TIME_STAP = Time.new.strftime("%Y%m%d%H%M%S")
 

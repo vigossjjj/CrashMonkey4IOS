@@ -18,7 +18,7 @@ CrashMonkey4IOS 开发环境：OS X Yosemtie 10.10.x
 ####安装过程使用reset.sh时(推荐执行前手动更新本地的ruby和homebrew版本)
 ***问题1: gem install erubis 需要用户本地的管理员权限***
 
-如果没有安装成功这个erubis模块的话会在/CrashMonkey4IOS/bin下运行 ./crash_monkey 后ruby报错 erubis的错误：
+如果没有安装成功这个erubis模块的话会在/CrashMonkey4IOS/bin下运行 ./smart_monkey 后ruby报错 erubis的错误：
 
 日志截图:
 
@@ -26,7 +26,7 @@ a.直接运行 sh reset.sh(很容易被忽略)
 
 <img alt="summary" src="https://github.com/vigossjjj/CrashMonkey4IOS/blob/master/img/geminstallerror.png">
 
-b.如果没有安装成功这个erubis模块的话会在/CrashMonkey4IOS/bin下运行 ./crash_monkey 后ruby报错 erubis的错误：
+b.如果没有安装成功这个erubis模块的话会在/CrashMonkey4IOS/bin下运行 ./smart_monkey 后ruby报错 erubis的错误：
 
 <img alt="summary" src="https://github.com/vigossjjj/CrashMonkey4IOS/blob/master/img/erubisCannotFound.png">
 
