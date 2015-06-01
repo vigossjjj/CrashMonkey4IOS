@@ -66,9 +66,11 @@ Usage: crash_monkey [options]
 ***Detail:***
 <img alt="detail" src="https://github.com/vigossjjj/CrashMonkey4IOS/blob/master/img/detail.jpg">
 ***SystemLog:***
-<img alt="detail" src="https://github.com/vigossjjj/CrashMonkey4IOS/blob/master/img/systemlog.jpg">
+<img alt="systemlog" src="https://github.com/vigossjjj/CrashMonkey4IOS/blob/master/img/systemlog.jpg">
 ***CrashLog:***
-<img alt="detail" src="https://github.com/vigossjjj/CrashMonkey4IOS/blob/master/img/crashlog.jpg">
+<img alt="crashlog" src="https://github.com/vigossjjj/CrashMonkey4IOS/blob/master/img/crashlog.jpg">
+***uiautotrace:***
+<img alt="uiautotrace" src="https://github.com/vigossjjj/CrashMonkey4IOS/blob/master/img/uiauto_trace.jpg">
 
 ###参考文献：
 1. https://github.com/mokemokechicken/CrashMonkey
