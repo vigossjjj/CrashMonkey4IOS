@@ -17,11 +17,6 @@ module UIAutoMonkey
 
     def run(opts)
       @options = opts
-      res_dir = @options[:result_base_dir] || RESULT_BASE_PATH
-
-      puts "INSTRUMENTS_TRACE_PATH : #{INSTRUMENTS_TRACE_PATH}"
-      puts "RESULT_BASE_PATH : #{res_dir}"
-
       if @options[:show_config]
         show_config
         return true
@@ -35,6 +30,11 @@ module UIAutoMonkey
         reset_iphone_simulator
         return true
       end
+
+      res_dir = @options[:result_base_dir] || RESULT_BASE_PATH
+      puts "INSTRUMENTS_TRACE_PATH : #{INSTRUMENTS_TRACE_PATH}"
+      puts "RESULT_BASE_PATH : #{res_dir}"
+
       ###########
       log @options.inspect
       FileUtils.remove_dir(result_base_dir, true)
@@ -76,7 +76,7 @@ module UIAutoMonkey
     def run_a_case
       log "=================================== Start Test (#{@times+1}/#{total_test_count}) ======================================="
       FileUtils.makedirs(crash_save_dir(@times+1)) unless File.exists?(crash_save_dir(@times+1))
-      pull_crash_from_iphone(@times+1)
+      pull_crash_files(@times+1)
       cr_list = crash_report_list(@times+1)
       start_time = Time.now
       watch_syslog do
@@ -91,7 +91,7 @@ module UIAutoMonkey
         end
       end
 
-      pull_crash_from_iphone(@times+1)
+      pull_crash_files(@times+1)
       new_cr_list = crash_report_list(@times+1)
       # increase crash report?
       diff_cr_list = new_cr_list - cr_list
@@ -212,6 +212,19 @@ module UIAutoMonkey
       `"instruments" -s devices`.strip.split(/\n/).drop(2)
     end
 
+    def instruments_deviceinfo(device)
+      `"instruments" -s devices | grep #{device}`.strip
+    end
+
+    def is_simulator
+      deviceinfo = instruments_deviceinfo(device)
+      if deviceinfo.include? "Simulator"
+        true
+      else
+        false
+      end
+    end
+
     def product_type(device)
       product_hash={
           "iPhone7,2"=>"iPhone 6",
@@ -229,16 +242,25 @@ module UIAutoMonkey
           "iPhone1,2"=>"iPhone 3G",
           "iPhone1,1"=>"iPhone",
         }
-      type=`ideviceinfo -u #{device} -k ProductType`.strip
-      product_hash[type]
+
+      if is_simulator
+        instruments_deviceinfo(device).split("[")[0]
+      else
+        type = `ideviceinfo -u #{device} -k ProductType`.strip
+        product_hash[type]
+      end
     end
 
     def product_version(device)
-      `ideviceinfo -u #{device} -k ProductVersion`.strip
+      if !is_simulator
+        `ideviceinfo -u #{device} -k ProductVersion`.strip
+      end
     end
 
     def device_name(device)
-      `ideviceinfo -u #{device} -k DeviceName`.strip
+      if !is_simulator
+        `ideviceinfo -u #{device} -k DeviceName`.strip
+      end
     end
 
     def compress_image(path)
@@ -345,12 +367,16 @@ module UIAutoMonkey
       "#{result_base_dir}/result_#{sprintf('%03d', times)}"
     end
 
-    def crash_report_dir
+    def sim_crash_report_dir
       "#{ENV['HOME']}/Library/Logs/DiagnosticReports"
     end
 
-    def pull_crash_from_iphone(times)
-      `idevicecrashreport -u #{device} -e -k #{crash_save_dir(times)}`
+    def pull_crash_files(times)
+      if !is_simulator
+        `idevicecrashreport -u #{device} -e -k #{crash_save_dir(times)}`
+      else
+        `cp #{sim_crash_report_dir}/* #{crash_save_dir(times)}`
+      end
     end
 
     def crash_report_list(times)
@@ -363,12 +389,14 @@ module UIAutoMonkey
       `rm -rf #{traces}`
     end
 
-    def grep_syslog
-      'tail -n 0 -f /var/log/system.log'
-    end
-
     def grep_ios_syslog
-      "#{deviceconsole_original_path} -u #{device}"
+      if is_simulator
+        puts "Attempting iOS Simulator system log capture via tail system.log."
+        "tail -n 0 -f ~/Library/Logs/CoreSimulator/#{device}*/system.log"
+      else
+        puts "Attempting iOS device system log capture via deviceconsole."
+        "#{deviceconsole_original_path} -u #{device}"
+      end
     end
 
     def console_log_path
@@ -460,7 +488,6 @@ module UIAutoMonkey
 
     def watch_syslog
       STDOUT.sync = true
-      puts "Attempting iOS device system log capture via deviceconsole."
       stdin, stdout, stderr = Open3.popen3(grep_ios_syslog)
       log_filename = "#{result_base_dir}/console.txt"
       thread = Thread.new do
