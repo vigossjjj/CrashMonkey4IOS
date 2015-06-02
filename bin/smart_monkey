@@ -11,11 +11,11 @@ require 'smart_monkey'
 
 opts = {}
 ARGV.options do |o|
-  o.on('-a app_name', 'Target Application, abs path to simulator-compiled .app file or the bundle_id of the desired target on device(Required)') {|b| opts[:app_path] = b}
+  o.on('-a app_name', 'Bundle ID of the desired target on device(Required)') {|b| opts[:app_path] = b}
   o.on('-w device', 'Target Device UDID(Required)') {|b| opts[:device] = b}
   o.on('-n run_count', 'How many times monkeys run(default: 1)') {|b| opts[:run_count] = b.to_i}
   o.on('-d result_dir', 'Where to output result(default: ./smart_monkey_result)') {|b| opts[:result_base_dir] = File.expand_path(b)}
-  o.on('-t time_limit_sec', 'Time limit of running(default: 100 sec)') {|b| opts[:time_limit_sec] = b.to_i}
+  o.on('-t time_limit_sec', 'Time limit of running') {|b| opts[:time_limit_sec] = b.to_i}
   o.on('-s dsym_file', 'Use .dSYM file to symbolicating crash logs') {|b| opts[:dsym_file_path] = File.expand_path(b)}
   o.on('-c custom_path', 'Configuration custom.js Path') {|b| opts[:custom_path] = File.expand_path(b)}
   o.on('-e extend_javascript_path', 'Extend Uiautomation Javascript for such Login scripts') {|b| opts[:extend_javascript_path] = File.expand_path(b)}
@@ -26,7 +26,7 @@ ARGV.options do |o|
   o.on('--list-app', 'Show List of Installed Apps in iPhone/iPhone Simulator') {|_| opts[:list_app] = true}
   o.on('--list-devices', 'Show List of Devices') {|_| opts[:list_devices] = true}
   o.on('--reset-iPhone-Simulator', 'Reset iPhone Simulator'){|_| opts[:reset_iphone_simulator] = true}
-  o.on('--version', 'print crash monkey version'){|_| opts[:version] = true}
+  o.on('--version', 'print smart monkey version'){|_| opts[:version] = true}
   o.parse!
 end
 
