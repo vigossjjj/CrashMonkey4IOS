@@ -424,7 +424,8 @@ module UIAutoMonkey
       # if extend_javascript_flag
       #   js = File.read(extend_javascript_path) + "\n" + js
       # end
-      # File.open(ui_custom_path, 'w') {|f| f.write(js)}
+      envs_str="UniqueDeviceID=\"#{device}\";"
+      File.open(File.join(result_base_dir,"Env.js"), 'w') {|f| f.write(envs_str)}
       FileUtils.copy(config_custom_path, result_base_dir)
       FileUtils.copy(ui_auto_monkey_original_path, result_base_dir)
       FileUtils.cp_r(ui_hole_handler_original_path, result_base_dir)
@@ -527,7 +528,7 @@ module UIAutoMonkey
 
     def rm_unused_imgs(used_imgs, dir)
       used_strs = used_imgs.join("\\|")
-      `cd "#{dir}";find . -type 'f' -name '*.png' | grep -v "#{used_strs}" | xargs rm`
+      `cd "#{dir}";find . -type 'f' -name '*.png' | grep -v "#{used_strs}" | xargs -I{} rm {}`
     end
 
     def decode_latest(num=10, drop_useless_img, drop_dir)
