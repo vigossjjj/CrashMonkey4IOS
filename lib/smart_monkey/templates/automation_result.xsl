@@ -39,6 +39,7 @@
 										<xsl:when test="integer = 8"><span style="color:blue">Screenshot</span></xsl:when>
 										<xsl:when test="integer = 5"><span style="color:green">Pass</span></xsl:when>
 										<xsl:when test="integer = 4"><span style="color:orange">Message</span></xsl:when>
+										<xsl:when test="integer = 2"><span style="color:orange">Warning</span></xsl:when>
 										<xsl:when test="integer = 1"><span style="color:black">Default</span></xsl:when>
 										<xsl:when test="integer = 0"><span style="color:gray">Debug</span></xsl:when>
 										<xsl:when test="integer = 7"><span style="color:red">Fail</span></xsl:when>
