@@ -58,9 +58,6 @@ Usage: smart_monkey [options]
         --version                    print smart monkey version
 ```
 
-###TODO List:
-2. 配置文件参数优化
-
 ###Troubleshooting:
 安装和执行测试遇到的问题解决方案请参看:[Troubleshooting.md][troubleshooting]
 
