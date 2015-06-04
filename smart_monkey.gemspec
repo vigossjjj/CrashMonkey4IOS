@@ -46,6 +46,7 @@ Gem::Specification.new do |s|
     "lib/smart_monkey/templates/result.html.erb",
     "lib/smart_monkey/templates/result_view.coffee",
     "lib/smart_monkey/templates/result_view.js",
+    "lib/smart_monkey/templates/jquery.min.js",
     "lib/ui-auto-monkey/custom.js",
     "lib/ui-auto-monkey/UIAutoMonkey.js",
     "lib/ui-auto-monkey/handler/buttonHandler.js",
