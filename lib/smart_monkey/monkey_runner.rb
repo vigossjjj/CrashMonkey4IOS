@@ -149,6 +149,7 @@ module UIAutoMonkey
       bootstrap_dir = File.expand_path('../../bootstrap', __FILE__)
       FileUtils.copy("#{bootstrap_dir}/css/bootstrap.css", result_base_dir)
       FileUtils.copy("#{bootstrap_dir}/js/bootstrap.js", result_base_dir)
+      FileUtils.copy(template_path('jquery.min.js'), result_base_dir)
     end
 
     def all_tests_ok?(result_list)
