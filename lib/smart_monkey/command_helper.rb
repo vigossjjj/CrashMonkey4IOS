@@ -48,9 +48,9 @@ module UIAutoMonkey
         stdout.each do |line|
           @tmpline = line.strip
           puts @tmpline
-          if @tmpline =~ /MonkeyTest finish/
-            app_hang_monitor_thread.kill
-          end
+          # if @tmpline =~ /MonkeyTest finish/
+          #   app_hang_monitor_thread.kill
+          # end
         end
         # app_hang_monitor_thread.kill
         instruments_stderr_thread.kill
