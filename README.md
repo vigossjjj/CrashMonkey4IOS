@@ -39,7 +39,7 @@ iOS Monkey Test Tool.
 $ smart_monkey -h
 Usage: smart_monkey [options]
     -a app_name                      Bundle ID of the desired target on device(Required)
-    -w device                        Target Device UDID(Required)
+    -w device                        Target device udid or device describe will match" (Required)
     -n run_count                     How many times monkeys run(default: 1)
     -d result_dir                    Where to output result(default: ./smart_monkey_result)
     -t time_limit_sec                Time limit of running

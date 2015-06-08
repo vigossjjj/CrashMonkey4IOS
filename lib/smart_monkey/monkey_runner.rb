@@ -170,8 +170,8 @@ module UIAutoMonkey
     def list_app
       puts "============For iPhone Simulator:"
       puts find_apps('*.app').map{|n| File.basename n}.uniq.sort.join("\n")
-      puts "============For iPhone Device:"
-      if device
+      if !is_simulator
+        puts "============For iPhone Device:"
         puts `ideviceinstaller -u #{device} -l`
       end
     end
@@ -194,7 +194,11 @@ module UIAutoMonkey
     end
 
     def device
-      @options[:device] || (devices[0].strip.split("[")[1].delete "]")
+      if @options[:device]
+        find_device(@options[:device])
+      else
+        (devices[0].strip.split("[")[1].delete "]")
+      end
     end
 
     def app_path
@@ -213,8 +217,18 @@ module UIAutoMonkey
       `"instruments" -s devices`.strip.split(/\n/).drop(2)
     end
 
+    def find_device(device)
+      device_line = `"instruments" -s devices | grep "#{device}"`.strip.split(/\n/)[0]
+      if device_line.empty?
+        puts "Invalid device, Please given a vaild device!"
+        puts `"instruments" -s devices`
+        exit(1)
+      end
+      device_line.strip.split("[")[1].delete "]"
+    end
+
     def instruments_deviceinfo(device)
-      `"instruments" -s devices | grep #{device}`.strip
+      `"instruments" -s devices | grep "#{device}"`.strip
     end
 
     def is_simulator
