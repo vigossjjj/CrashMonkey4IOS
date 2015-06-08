@@ -39,3 +39,4 @@ gem_installer erubis
 # install 3rd depends library via brew
 brew_installer libimobiledevice
 brew_installer imagemagick
+brew_installer ideviceinstaller

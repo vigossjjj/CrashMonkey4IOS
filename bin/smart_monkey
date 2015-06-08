@@ -30,6 +30,8 @@ ARGV.options do |o|
   o.parse!
 end
 
+MonkeyDoctor.run_env_doctor
+
 if opts[:version]
   dirname = File.dirname(File.dirname(__FILE__))
   filepath = File.join(dirname, "VERSION")
