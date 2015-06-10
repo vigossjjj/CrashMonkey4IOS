@@ -129,6 +129,7 @@ module UIAutoMonkey
       if @options[:compress_rate]
         compress_image(result_history_dir(@times))
       end
+      rotate_imgs(result_history_dir(@times))
       rm_instruments_trace(INSTRUMENTS_TRACE_PATH)
       kill_all('iPhone Simulator')
       sleep 3
@@ -219,7 +220,7 @@ module UIAutoMonkey
 
     def find_device(device)
       device_line = `"instruments" -s devices | grep "#{device}"`.strip.split(/\n/)[0]
-      if device_line.empty?
+      if device_line.nil?
         puts "Invalid device, Please given a vaild device!"
         puts `"instruments" -s devices`
         exit(1)
@@ -242,20 +243,51 @@ module UIAutoMonkey
 
     def product_type(device)
       product_hash={
-          "iPhone7,2"=>"iPhone 6",
-          "iPhone7,1"=>"iPhone 6 Plus",
-          "iPhone6,2"=>"iPhone 5S (CDMA)",
-          "iPhone6,1"=>"iPhone 5S (GSM)",
-          "iPhone5,4"=>"iPhone 5C (CDMA)",
-          "iPhone5,3"=>"iPhone 5C (GSM)",
-          "iPhone5,2"=>"iPhone 5",
-          "iPhone5,1"=>"iPhone 5",
-          "iPhone4,1"=>"iPhone 4S",
-          "iPhone3,2"=>"iPhone 4 - CDMA",
-          "iPhone3,1"=>"iPhone 4 - GSM",
-          "iPhone2,1"=>"iPhone 3GS",
-          "iPhone1,2"=>"iPhone 3G",
           "iPhone1,1"=>"iPhone",
+          "iPhone1,2"=>"iPhone 3G",
+          "iPhone2,1"=>"iPhone 3GS",
+          "iPhone3,1"=>"iPhone 4 - GSM",
+          "iPhone3,2"=>"iPhone 4 - CDMA",
+          "iPhone3,3"=>"iPhone 4 - CDMA",
+          "iPhone4,1"=>"iPhone 4S",
+          "iPhone5,1"=>"iPhone 5",
+          "iPhone5,2"=>"iPhone 5",
+          "iPhone5,3"=>"iPhone 5C (GSM)",
+          "iPhone5,4"=>"iPhone 5C (CDMA)",
+          "iPhone6,1"=>"iPhone 5S (GSM)",
+          "iPhone6,2"=>"iPhone 5S (CDMA)",
+          "iPhone7,1"=>"iPhone 6 Plus",
+          "iPhone7,2"=>"iPhone 6",
+          "iPad1,1"=>"iPad",
+          "iPad2,1"=>"iPad 2 (Wi-Fi)",
+          "iPad2,2"=>"iPad 2 (GSM)",
+          "iPad2,3"=>"iPad 2 (CDMA)",
+          "iPad2,4"=>"iPad 2 (Wi-Fi, revised)",
+          "iPad2,5"=>"iPad mini (Wi-Fi)",
+          "iPad2,6"=>"iPad mini (A1454)",
+          "iPad2,7"=>"iPad mini (A1455)",
+          "iPad3,1"=>"iPad (3rd gen, Wi-Fi)",
+          "iPad3,2"=>"iPad (3rd gen, Wi-Fi+LTE Verizon)",
+          "iPad3,3"=>"iPad (3rd gen, Wi-Fi+LTE AT&T)",
+          "iPad3,4"=>"iPad (4th gen, Wi-Fi)",
+          "iPad3,5"=>"iPad (4th gen, A1459)",
+          "iPad3,6"=>"iPad (4th gen, A1460)",
+          "iPad4,1"=>"iPad Air (Wi-Fi)",
+          "iPad4,2"=>"iPad Air (Wi-Fi+LTE)",
+          "iPad4,3"=>"iPad Air (Rev)",
+          "iPad4,4"=>"iPad mini 2 (Wi-Fi)",
+          "iPad4,5"=>"iPad mini 2 (Wi-Fi+LTE)",
+          "iPad4,6"=>"iPad mini 2 (Rev)",
+          "iPad4,7"=>"iPad mini 3 (Wi-Fi)",
+          "iPad4,8"=>"iPad mini 3 (A1600)",
+          "iPad4,9"=>"iPad mini 3 (A1601)",
+          "iPad5,3"=>"iPad Air 2 (Wi-Fi)",
+          "iPad5,4"=>"iPad Air 2 (Wi-Fi+LTE)",
+          "iPod1,1"=>"iPod touch",
+          "iPod2,1"=>"iPod touch (2nd gen)",
+          "iPod3,1"=>"iPod touch (3rd gen)",
+          "iPod4,1"=>"iPod touch (4th gen)",
+          "iPod5,1"=>"iPod touch (5th gen)",
         }
 
       if is_simulator
@@ -283,6 +315,20 @@ module UIAutoMonkey
       compress_rate = @options[:compress_rate]
       # `find #{path} -name "*.png" -exec convert {} -resize 50% -sample 50% {} \\\;`
       `mogrify -resize #{compress_rate} "#{path}/*.png"`
+    end
+
+    def rotate_imgs(path)
+      rotated_map={
+          "1"=>nil,
+          "2"=>"180",
+          "3"=>"270",
+          "4"=>"90",
+      }
+      orientationNum = File.read(File.join(result_base_dir,"orientation")).strip
+      value = rotated_map[orientationNum]
+      unless value.nil?
+        `mogrify -rotate #{value} "#{path}/*.png"`
+      end
     end
 
     def kill_all_need
@@ -439,7 +485,7 @@ module UIAutoMonkey
       # if extend_javascript_flag
       #   js = File.read(extend_javascript_path) + "\n" + js
       # end
-      envs_str="UniqueDeviceID=\"#{device}\";"
+      envs_str="UniqueDeviceID=\"#{device}\";\nResultBaseDir=\"#{result_base_dir}\";\n"
       File.open(File.join(result_base_dir,"Env.js"), 'w') {|f| f.write(envs_str)}
       FileUtils.copy(config_custom_path, result_base_dir)
       FileUtils.copy(ui_auto_monkey_original_path, result_base_dir)
@@ -555,7 +601,7 @@ module UIAutoMonkey
         if log[LOG_TYPE] == 'Screenshot'
           if log[MESSAGE] =~ /^action/
             hash[:action_image] = log[MESSAGE]
-          elsif log[MESSAGE] =~ /^monkey/
+          elsif log[MESSAGE] =~ /^monkey[^external]*$/
             hash[:screen_image] = log[MESSAGE]
             used_imgs << log[MESSAGE]
             hash[:timestamp] = log[TIMESTAMP]
@@ -570,9 +616,8 @@ module UIAutoMonkey
             num -= 1
           end
         elsif log[LOG_TYPE] == 'Debug' && log[MESSAGE] =~ /^target./
-          hash[:message] = log[MESSAGE] unless log[MESSAGE] =~ /^target.captureRectWithName/ && log[MESSAGE] =~ /switcherScrollView/
-        # elsif log[LOG_TYPE] == 'Default' && log[MESSAGE] =~ /^DeviceInfo/
-        #   hash[:screen_size] = log[MESSAGE]
+          # hash[:message] = log[MESSAGE] unless log[MESSAGE] =~ /^target.captureRectWithName/ && log[MESSAGE] =~ /switcherScrollView/
+          hash[:message] = log[MESSAGE] unless log[MESSAGE] =~ /size:{height:0.00,width:0.00}/ || log[MESSAGE] =~ /switcherScrollView/
         end
       end
       #drop unused imgs
