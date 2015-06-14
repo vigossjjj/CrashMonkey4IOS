@@ -28,18 +28,18 @@ module UIAutoMonkey
       Open3.popen3(*cmds) do |stdin, stdout, stderr, thread|
         @tmpline = ""
         stdin.close
-        # app_hang_monitor_thread = Thread.start{
-        #   sleep 30
-        #   while true
-        #     current_line = @tmpline
-        #     sleep 30
-        #     after_sleep_line = @tmpline
-        #     if current_line == after_sleep_line
-        #       puts "WARN: Application go to background! Auto-Re-Launch app!"
-        #       relaunch_app(device, app)
-        #     end
-        #   end
-        # }
+        app_hang_monitor_thread = Thread.start{
+          sleep 30
+          while true
+            current_line = @tmpline
+            sleep 30
+            after_sleep_line = @tmpline
+            if current_line == after_sleep_line
+              puts "WARN: no response in log, trigger re-launch action."
+              relaunch_app(device, app)
+            end
+          end
+        }
         instruments_stderr_thread = Thread.start{
           stderr.each do |line|
             puts line
@@ -48,11 +48,11 @@ module UIAutoMonkey
         stdout.each do |line|
           @tmpline = line.strip
           puts @tmpline
-          # if @tmpline =~ /MonkeyTest finish/
-          #   app_hang_monitor_thread.kill
-          # end
+          if @tmpline =~ /MonkeyTest finish/
+            app_hang_monitor_thread.kill
+          end
         end
-        # app_hang_monitor_thread.kill
+        app_hang_monitor_thread.kill
         instruments_stderr_thread.kill
       end
     end

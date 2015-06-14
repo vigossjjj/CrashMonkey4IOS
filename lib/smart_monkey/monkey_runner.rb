@@ -324,10 +324,15 @@ module UIAutoMonkey
           "3"=>"270",
           "4"=>"90",
       }
-      orientationNum = File.read(File.join(result_base_dir,"orientation")).strip
-      value = rotated_map[orientationNum]
-      unless value.nil?
-        `mogrify -rotate #{value} "#{path}/*.png"`
+      orientation_file = File.join(result_base_dir,"orientation")
+      if File.exists?(orientation_file)
+        orientationNum = File.read(orientation_file).strip
+        value = rotated_map[orientationNum]
+        unless value.nil?
+          `mogrify -rotate #{value} "#{path}/*.png"`
+        end
+      else
+        exit(1)
       end
     end
 
