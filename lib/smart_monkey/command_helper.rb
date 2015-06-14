@@ -48,7 +48,7 @@ module UIAutoMonkey
         stdout.each do |line|
           @tmpline = line.strip
           puts @tmpline
-          if @tmpline =~ /MonkeyTest finish/
+          if @tmpline =~ /MonkeyTest finish/ || @tmpline =~ /Script was stopped by the user/
             app_hang_monitor_thread.kill
           end
         end

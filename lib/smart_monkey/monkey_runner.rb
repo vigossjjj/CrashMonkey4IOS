@@ -492,7 +492,14 @@ module UIAutoMonkey
       # end
       envs_str="UniqueDeviceID=\"#{device}\";\nResultBaseDir=\"#{result_base_dir}\";\n"
       File.open(File.join(result_base_dir,"Env.js"), 'w') {|f| f.write(envs_str)}
-      FileUtils.copy(config_custom_path, result_base_dir)
+      custom_file = File.join(result_base_dir,"custom.js")
+      FileUtils.copy(config_custom_path, custom_file)
+      unless time_limit_sec.nil?
+        File.open(custom_file) do |fr|
+          buffer = fr.read.gsub(/monkey.config.numberOfEvents.*;/, "monkey.config.numberOfEvents = 99999999;")
+          File.open(custom_file, "w") { |fw| fw.write(buffer) }
+        end
+      end
       FileUtils.copy(ui_auto_monkey_original_path, result_base_dir)
       FileUtils.cp_r(ui_hole_handler_original_path, result_base_dir)
       FileUtils.cp_r(ui_tuneup_original_path, result_base_dir)
