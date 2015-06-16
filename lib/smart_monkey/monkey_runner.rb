@@ -186,8 +186,9 @@ module UIAutoMonkey
     end
 
     def reset_iphone_simulator
-      FileUtils.rm_rf("#{Dir.home}/Library/Application\ Support/iPhone\ Simulator/")
-      puts 'reset iPhone Simulator successful'
+      `killall -9 "iOS Simulator"`
+      # FileUtils.rm_rf("#{Dir.home}/Library/Application\ Support/iPhone\ Simulator/")
+      # puts 'reset iPhone Simulator successful'
     end
 
     def total_test_count
@@ -373,6 +374,10 @@ module UIAutoMonkey
       File.expand_path('../../ios_device_log/deviceconsole', __FILE__)
     end
 
+    def ui_auto_monkey_lib_original_path
+      File.expand_path('../../ui-auto-monkey', __FILE__)
+    end
+
     def ui_auto_monkey_original_path
       File.expand_path('../../ui-auto-monkey/UIAutoMonkey.js', __FILE__)
     end
@@ -481,6 +486,20 @@ module UIAutoMonkey
       `xsltproc --output "#{result_dir}/uiautomation.html" #{uiautomation_xsl_path} "#{result_dir}/Automation Results.plist"`
     end
 
+    def replace_event_num_for_time_limit(custom_file)
+      File.open(custom_file) do |fr|
+        buffer = fr.read.gsub(/monkey.config.numberOfEvents.*;/, "monkey.config.numberOfEvents = 99999999;")
+        File.open(custom_file, "w") { |fw| fw.write(buffer) }
+      end
+    end
+
+    def replace_event_num_for_user_define(custom_file, event_number)
+      File.open(custom_file) do |fr|
+        buffer = fr.read.gsub(/monkey.config.numberOfEvents.*;/, "monkey.config.numberOfEvents = #{event_number};")
+        File.open(custom_file, "w") { |fw| fw.write(buffer) }
+      end
+    end
+
     def generate_ui_auto_monkey
       # extend_javascript_flag, extend_javascript_path =  show_extend_javascript
       # orig = File.read(ui_custom_original_path)
@@ -492,22 +511,23 @@ module UIAutoMonkey
       # end
       envs_str="UniqueDeviceID=\"#{device}\";\nResultBaseDir=\"#{result_base_dir}\";\n"
       File.open(File.join(result_base_dir,"Env.js"), 'w') {|f| f.write(envs_str)}
-      custom_file = File.join(result_base_dir,"custom.js")
-      FileUtils.copy(config_custom_path, custom_file)
-      unless time_limit_sec.nil?
-        File.open(custom_file) do |fr|
-          buffer = fr.read.gsub(/monkey.config.numberOfEvents.*;/, "monkey.config.numberOfEvents = 99999999;")
-          File.open(custom_file, "w") { |fw| fw.write(buffer) }
-        end
+      if @options[:custom_cfg_path]
+        FileUtils.cp_r(File.join(@options[:custom_cfg_path], "."), result_base_dir)
+        FileUtils.copy(ui_auto_monkey_original_path, result_base_dir)
+        FileUtils.cp_r(ui_tuneup_original_path, result_base_dir)
+      else
+        FileUtils.cp_r(File.join(ui_auto_monkey_lib_original_path, "."), result_base_dir)
       end
-      FileUtils.copy(ui_auto_monkey_original_path, result_base_dir)
-      FileUtils.cp_r(ui_hole_handler_original_path, result_base_dir)
-      FileUtils.cp_r(ui_tuneup_original_path, result_base_dir)
-      # FileUtils.copy("#{bootstrap_dir}/js/bootstrap.js", result_base_dir)
+      replace_event_num_for_user_define(ui_custom_path, @options[:event_number]) if @options[:event_number]
+      replace_event_num_for_time_limit(ui_custom_path) unless time_limit_sec.nil?
     end
 
     def config_custom_path
-      @options[:custom_path] || ui_custom_original_path
+      if @options[:custom_cfg_path]
+        File.join(@options[:custom_cfg_path], "custom.js")
+      else
+        ui_custom_original_path
+      end
     end
 
     def replace_text(orig, replace_str, marker_begin_line, marker_end_line)
@@ -552,7 +572,6 @@ module UIAutoMonkey
       hash[:uia_trace] = @uia_trace
       hash[:crashed] = @crashed
       hash[:no_run] = @no_run
-
       er = Erubis::Eruby.new(File.read(template_path('result.html.erb')))
       open("#{result_dir}/result.html", 'w') do |f|
         f.write(er.result(hash))
