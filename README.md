@@ -32,6 +32,7 @@ iOS Monkey Test Tool.
 ###### 安装Release版
 `gem install smart_monkey`, 执行入口: 终端下直接使用`smart_monkey`
 ###### 安装开发版
+安装Ruby模块`gem install erubis`(如安装release版，此模块会自动配置加载。)
 直接clone本项目, 执行入口: `/CrashMonkey4IOS/bin/smart_monkey`
 
 ###### 执行命令
