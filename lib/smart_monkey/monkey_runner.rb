@@ -8,7 +8,6 @@ module UIAutoMonkey
   require 'json'
 
   class MonkeyRunner
-    TRACE_TEMPLATE='/Applications/Xcode.app/Contents/Applications/Instruments.app/Contents/PlugIns/AutomationInstrument.xrplugin/Contents/Resources/Automation.tracetemplate'
     RESULT_BASE_PATH = File.expand_path('smart_monkey_result')
     INSTRUMENTS_TRACE_PATH = File.expand_path('*.trace')
     TIME_STAP = Time.new.strftime("%Y%m%d%H%M%S")
@@ -82,9 +81,9 @@ module UIAutoMonkey
       watch_syslog do
         begin
           unless time_limit_sec.nil?
-            run_process(%W(instruments -w #{device} -l #{time_limit} -t #{TRACE_TEMPLATE} #{app_path} -e UIASCRIPT #{ui_custom_path} -e UIARESULTSPATH #{result_base_dir}))
+            run_process(%W(instruments -w #{device} -l #{time_limit} -t #{automation_template_path} #{app_path} -e UIASCRIPT #{ui_custom_path} -e UIARESULTSPATH #{result_base_dir}))
           else
-            run_process(%W(instruments -w #{device} -t #{TRACE_TEMPLATE} #{app_path} -e UIASCRIPT #{ui_custom_path} -e UIARESULTSPATH #{result_base_dir}))
+            run_process(%W(instruments -w #{device} -t #{automation_template_path} #{app_path} -e UIASCRIPT #{ui_custom_path} -e UIARESULTSPATH #{result_base_dir}))
           end
         rescue Timeout::Error
           kill_all('instruments', '9')
@@ -412,6 +411,10 @@ module UIAutoMonkey
 
     def xcode_path
       `dirname #{xcode_developer_path}`.strip
+    end
+
+    def automation_template_path
+      `find #{xcode_path} -name Automation.tracetemplate`.strip
     end
     
     def symbolicatecrash_base_path()
