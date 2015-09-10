@@ -4,6 +4,15 @@ module UIAutoMonkey
   module CommandHelper
     require 'open3'
 
+    def is_simulator
+      deviceinfo = instruments_deviceinfo(device)
+      if deviceinfo.include? "Simulator"
+        true
+      else
+        false
+      end
+    end
+
     def shell(cmds)
       puts "Shell: #{cmds.inspect}"
       Open3.popen3(*cmds) do |stdin, stdout, stderr|
@@ -18,7 +27,11 @@ module UIAutoMonkey
     # end
 
     def relaunch_app(device,app)
-      `idevicedebug -u #{device} run #{app} >/dev/null 2>&1 &`
+      if is_simulator
+        `xcrun simctl launch #{device}  #{app} >/dev/null 2>&1 &`
+      else
+        `idevicedebug -u #{device} run #{app} >/dev/null 2>&1 &`
+      end
     end
 
     def run_process(cmds)
