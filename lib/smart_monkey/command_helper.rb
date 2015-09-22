@@ -4,9 +4,13 @@ module UIAutoMonkey
   module CommandHelper
     require 'open3'
 
+    def instruments_deviceinfo(device)
+      `"instruments" -s devices | grep "#{device}"`.strip
+    end
+
     def is_simulator
       deviceinfo = instruments_deviceinfo(device)
-      if deviceinfo.include? "Simulator"
+      if deviceinfo.include? "－"
         true
       else
         false
