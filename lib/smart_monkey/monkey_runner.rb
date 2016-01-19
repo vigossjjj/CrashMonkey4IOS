@@ -258,6 +258,8 @@ module UIAutoMonkey
           "iPhone6,2"=>"iPhone 5S (CDMA)",
           "iPhone7,1"=>"iPhone 6 Plus",
           "iPhone7,2"=>"iPhone 6",
+          "iPhone8,1"=>"iPhone 6S",
+          "iPhone8,2"=>"iPhone 6S Plus",
           "iPad1,1"=>"iPad",
           "iPad2,1"=>"iPad 2 (Wi-Fi)",
           "iPad2,2"=>"iPad 2 (GSM)",
