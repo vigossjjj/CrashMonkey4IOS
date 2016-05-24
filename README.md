@@ -18,8 +18,17 @@ iOS Monkey Test Tool.
   [troubleshooting]:https://github.com/vigossjjj/CrashMonkey4IOS/tree/master/Troubleshooting.md
 
 ###系统及环境要求:
-1. 安装Ruby运行环境，建议不要使用OS X自带版本，可自行使用RVM安装最新版的Ruby。建议使用淘宝镜像安装，速度比较快，`$ sed -i -e 's/ftp\.ruby-lang\.org\/pub\/ruby/ruby\.taobao\.org\/mirrors\/ruby/g' ~/.rvm/config/db`
-2. 确保gem可用，也建议使用淘宝镜像 `gem sources --remove https://rubygems.org/;gem sources -a http://ruby.taobao.org/;gem sources -l`
+1. 安装Ruby运行环境，建议不要使用OS X自带版本，可自行使用RVM([Ruby Version Manager](http://www.ruby-lang.org/en/downloads/))安装最新版的Ruby。安装好RVM后建议使用淘宝镜像安装ruby，
+
+ `$ sed -i -e 's/ftp\.ruby-lang\.org\/pub\/ruby/ruby\.taobao\.org\/mirrors\/ruby/g' ~/.rvm/config/db`
+ 
+2. 确保gem可用，也建议使用淘宝镜像：
+
+ 	`gem sources --remove https://rubygems.org/`
+
+ 	`gem sources -a http://ruby.taobao.org/`
+ 	
+	`gem sources -l`
 3. 安装**Homebrew** `ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
 4. 建议Xcode 6.x +
 
