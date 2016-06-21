@@ -196,7 +196,7 @@ module UIAutoMonkey
 
     def device
       if @options[:device]
-         find_device(@options[:device])
+        find_device(@options[:device])
       else
         (devices[0].strip.split("[")[1].split("]")[0])
       end
