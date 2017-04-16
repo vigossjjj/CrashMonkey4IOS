@@ -1,4 +1,4 @@
-#Troubleshooting for CrashMonkey4IOS
+# Troubleshooting for CrashMonkey4IOS
 
 CrashMonkey4IOS 安装环节中的问题总结和处理。
 
@@ -15,7 +15,7 @@ CrashMonkey4IOS 开发环境：OS X Yosemtie 10.10.x
 3.确保被测app被移至后台后进程不会被强制杀死。
 
 
-####安装过程使用reset.sh时(推荐执行前手动更新本地的ruby和homebrew版本)
+#### 安装过程使用reset.sh时(推荐执行前手动更新本地的ruby和homebrew版本)
 ***问题1: gem install erubis 需要用户本地的管理员权限***
 
 如果没有安装成功这个erubis模块的话会在/CrashMonkey4IOS/bin下运行 ./smart_monkey 后ruby报错 erubis的错误：

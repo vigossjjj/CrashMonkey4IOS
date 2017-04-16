@@ -1,7 +1,7 @@
 # CrashMonkey4IOS
 iOS Monkey Test Tool.
 
-###简要说明:
+### 简要说明:
 1. 支持**真机测试、模拟器测试**
 2. 支持收集**系统日志(Systemlog)**、**崩溃日志(Crashlog)**、***instrument行为日志***
 3. 支持测试报告截图，绘制行为轨迹
@@ -17,7 +17,7 @@ iOS Monkey Test Tool.
   [tp]:https://github.com/vigossjjj/CrashMonkey4IOS/tree/master/lib/ui-auto-monkey/tuneup
   [troubleshooting]:https://github.com/vigossjjj/CrashMonkey4IOS/tree/master/Troubleshooting.md
 
-###系统及环境要求:
+### 系统及环境要求:
 1. 安装Ruby运行环境，建议不要使用OS X自带版本，可自行使用RVM([Ruby Version Manager](http://www.ruby-lang.org/en/downloads/))安装最新版的Ruby。安装好RVM后建议使用淘宝镜像安装ruby，
 
  `$ sed -i -e 's/ftp\.ruby-lang\.org\/pub\/ruby/ruby\.taobao\.org\/mirrors\/ruby/g' ~/.rvm/config/db`
@@ -32,12 +32,12 @@ iOS Monkey Test Tool.
 3. 安装**Homebrew** `ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"`
 4. 建议Xcode 6.x +
 
-###必要依赖安装:
+### 必要依赖安装:
 1. `brew install -HEAD ideviceinstaller`
 2. `brew install libimobiledevice`
 3. `brew install imagemagick`
 
-###使用说明:
+### 使用说明:
 ###### 安装Release版
 `gem install smart_monkey`, 执行入口: 终端下直接使用`smart_monkey`
 ###### 安装开发版
@@ -47,7 +47,7 @@ iOS Monkey Test Tool.
 ###### 执行命令
 `smart_monkey -a ${App_BunnelID} -w ${iPhone_UDID}`
 
-###参数说明:
+### 参数说明:
 
 * **`-a`**: 指向被测程序的**BundleID**(不可缺省)。e.g.`-a com.mytest.app`
 * **`-w`**: 指向测试设备的**UDID**，可以通过`$instruments -s devices`进行设备id的查看，若缺省则默认指向第一台设备(模拟器或真机)。e.g.`-w 26701a3a5bc17038ca0465186407b912375b35a7`
@@ -99,10 +99,10 @@ Usage: smart_monkey [options]
         --version                    print smart monkey version
 ```
 
-###Troubleshooting:
+### Troubleshooting:
 安装和执行测试遇到的问题解决方案请参看:[Troubleshooting.md][troubleshooting]
 
-###测试报告:
+### 测试报告:
 ***Summary:***
 <img alt="summary" src="https://github.com/vigossjjj/CrashMonkey4IOS/blob/master/img/summary.jpg">
 ***Detail:***
@@ -114,6 +114,6 @@ Usage: smart_monkey [options]
 ***uiautotrace:***
 <img alt="uiautotrace" src="https://github.com/vigossjjj/CrashMonkey4IOS/blob/master/img/uiauto_trace.jpg">
 
-###参考文献：
+### 参考文献：
 1. https://github.com/mokemokechicken/CrashMonkey
 2. https://github.com/jonathanpenn/ui-auto-monkey
