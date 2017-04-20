@@ -198,7 +198,7 @@ module UIAutoMonkey
       if @options[:device]
         find_device(@options[:device])
       else
-        (devices[0].strip.split("[")[1].delete "]")
+        (devices[0].strip.split("[")[1].split("]")[0])
       end
     end
 
@@ -225,7 +225,8 @@ module UIAutoMonkey
         puts `"instruments" -s devices`
         exit(1)
       end
-      device_line.strip.split("[")[1].delete "]"
+      # device_line.strip.split("[")[1].delete "] (Simulator)"
+      device_line.strip.split("[")[1].split("]")[0]
     end
 
     def instruments_deviceinfo(device)
@@ -234,7 +235,7 @@ module UIAutoMonkey
 
     def is_simulator
       deviceinfo = instruments_deviceinfo(device)
-      if deviceinfo.include? "Simulator"
+      if deviceinfo.include? "-"
         true
       else
         false
